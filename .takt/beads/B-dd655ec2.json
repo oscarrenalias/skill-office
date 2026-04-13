@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-f993e1f7",
-  "dependencies": [],
+  "dependencies": [
+    "B-338d86fc"
+  ],
   "acceptance_criteria": [
     "`unpack()` extracts all ZIP entries unchanged and returns the destination directory path.",
     "`pack()` produces a ZIP where `[Content_Types].xml` is the first entry.",
