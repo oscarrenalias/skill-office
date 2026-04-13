@@ -74,6 +74,51 @@ def extract_text_cmd(file: Path, slides_str: str | None, output_file: str | None
         )
 
 
+@cli.command("unpack")
+@click.argument("file", type=click.Path(exists=True, path_type=Path))
+@click.argument("output_dir", required=False, default=None, type=click.Path(path_type=Path))
+@click.option("--plain", is_flag=True, default=False, help="Output plain text instead of JSON.")
+def unpack_cmd(file: Path, output_dir: Path | None, plain: bool) -> None:
+    """Unpack a .pptx file into a directory."""
+    from pypptx.ops.pack import unpack
+
+    if output_dir is None:
+        output_dir = Path(file.stem)
+
+    try:
+        result_dir = unpack(file, output_dir)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+    output_result(
+        {"unpacked_dir": str(result_dir)},
+        plain,
+        lambda d: d["unpacked_dir"],
+    )
+
+
+@cli.command("pack")
+@click.argument("src_dir", type=click.Path(exists=True, path_type=Path))
+@click.argument("output_file", type=click.Path(path_type=Path))
+@click.option("--plain", is_flag=True, default=False, help="Output plain text instead of JSON.")
+def pack_cmd(src_dir: Path, output_file: Path, plain: bool) -> None:
+    """Pack an unpacked directory back into a .pptx file."""
+    from pypptx.ops.pack import pack
+
+    try:
+        result_file = pack(src_dir, output_file)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+    output_result(
+        {"output_file": str(result_file)},
+        plain,
+        lambda d: d["output_file"],
+    )
+
+
 @cli.group()
 def slide() -> None:
     """Commands for working with slides."""
