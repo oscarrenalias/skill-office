@@ -3,7 +3,7 @@
   "title": "cli.py: extract-text command",
   "agent_type": "developer",
   "description": "Wire `pypptx extract-text <file.pptx> [--slides 1,3,5] [--output file.txt]` into `cli.py`. Parse the `--slides` comma-separated list into a `list[int]`. Without `--output`, write plain text directly to stdout (bypassing `output_result()`). With `--output`, write text to the file and output JSON `{\"output_file\": \"...\", \"slide_count\": N}` to stdout.",
-  "status": "in_progress",
+  "status": "done",
   "bead_type": "task",
   "parent_id": "B-f993e1f7",
   "dependencies": [
@@ -28,37 +28,48 @@
     "pypptx/cli.py"
   ],
   "expected_globs": [],
-  "touched_files": [],
-  "changed_files": [],
+  "touched_files": [
+    "pypptx/__pycache__/cli.cpython-314.pyc",
+    "pypptx/cli.py"
+  ],
+  "changed_files": [
+    "pypptx/__pycache__/cli.cpython-314.pyc",
+    "pypptx/cli.py"
+  ],
   "updated_docs": [],
   "handoff_summary": {
-    "completed": "",
-    "remaining": "",
-    "risks": "",
-    "verdict": "",
+    "completed": "Wired `extract-text` CLI command into `cli.py`: argument parsing, slide filter validation, stdout plain-text output (no `--output`), file write + JSON result output (with `--output`), and `--plain` passthrough to `output_result()`.",
+    "remaining": "None \u2014 all acceptance criteria addressed.",
+    "risks": "slide_count is derived by counting `--- Slide ` delimiter lines in the extracted text; this is correct but depends on the delimiter format staying stable in `ops/extract.py`.",
+    "verdict": "approved",
     "findings_count": 0,
     "requires_followup": false,
-    "changed_files": [],
+    "changed_files": [
+      "pypptx/__pycache__/cli.cpython-314.pyc",
+      "pypptx/cli.py"
+    ],
     "updated_docs": [],
-    "next_action": "",
-    "next_agent": "",
+    "next_action": "Tester agent should validate all six acceptance criteria against a real .pptx fixture.",
+    "next_agent": "tester",
     "block_reason": "",
-    "expected_files": [],
+    "expected_files": [
+      "pypptx/cli.py"
+    ],
     "expected_globs": [],
-    "touched_files": [],
-    "conflict_risks": "",
-    "design_decisions": "",
-    "test_coverage_notes": "",
-    "known_limitations": ""
+    "touched_files": [
+      "pypptx/__pycache__/cli.cpython-314.pyc",
+      "pypptx/cli.py"
+    ],
+    "conflict_risks": "No conflicts expected; only `pypptx/cli.py` was modified and no sibling beads claim that file.",
+    "design_decisions": "slide_count counted from delimiter lines in extracted text rather than re-opening the Presentation a second time, avoiding a duplicate I/O round-trip. Presentation is only opened once (for index validation when --slides is supplied).",
+    "test_coverage_notes": "Tests needed: stdout plain text (no --output), --slides filter, --output file write + JSON stdout, --plain + --output filename-only stdout, non-integer slide index error, out-of-range slide index error, unreadable file error.",
+    "known_limitations": "Out-of-range validation requires loading the Presentation even before extract_text is called, which means the file is parsed twice when --slides is provided."
   },
   "block_reason": "",
-  "conflict_risks": "",
+  "conflict_risks": "No conflicts expected; only `pypptx/cli.py` was modified and no sibling beads claim that file.",
   "branch_name": "feature/b-f993e1f7",
   "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f993e1f7",
-  "lease": {
-    "owner": "developer:B-150f15c0",
-    "expires_at": "2026-04-13T21:43:35.733453+00:00"
-  },
+  "lease": null,
   "retries": 0,
   "execution_history": [
     {
@@ -100,6 +111,13 @@
       "details": {
         "template_path": ".takt/agent-runs/B-150f15c0/repo/templates/agents/developer.md"
       }
+    },
+    {
+      "timestamp": "2026-04-13T21:15:27.222898+00:00",
+      "event": "completed",
+      "agent_type": "developer",
+      "summary": "Implemented `extract-text` command in `pypptx/cli.py`. The command accepts a `.pptx` file argument with optional `--slides` (comma-separated 1-based indices), `--output` (file path), and `--plain` flags. Without `--output`, plain text is written directly to stdout. With `--output`, text is written to the file and JSON `{\"output_file\": \"...\", \"slide_count\": N}` (or just the filename with `--plain`) is written to stdout. Non-integer or out-of-range slide indices produce an error message on stderr with a non-zero exit code. Also added the missing `from pathlib import Path` import.",
+      "details": {}
     }
   ],
   "metadata": {
@@ -173,7 +191,53 @@
         "test_coverage_notes": "",
         "known_limitations": ""
       }
-    }
+    },
+    "last_agent_result": {
+      "outcome": "completed",
+      "summary": "Implemented `extract-text` command in `pypptx/cli.py`. The command accepts a `.pptx` file argument with optional `--slides` (comma-separated 1-based indices), `--output` (file path), and `--plain` flags. Without `--output`, plain text is written directly to stdout. With `--output`, text is written to the file and JSON `{\"output_file\": \"...\", \"slide_count\": N}` (or just the filename with `--plain`) is written to stdout. Non-integer or out-of-range slide indices produce an error message on stderr with a non-zero exit code. Also added the missing `from pathlib import Path` import.",
+      "verdict": "approved",
+      "findings_count": 0,
+      "requires_followup": false,
+      "next_agent": "tester",
+      "block_reason": ""
+    },
+    "telemetry": {
+      "cost_usd": 0.28237905,
+      "duration_ms": 110207,
+      "duration_api_ms": 105210,
+      "num_turns": 18,
+      "input_tokens": 17,
+      "output_tokens": 6751,
+      "cache_creation_tokens": 20315,
+      "cache_read_tokens": 349606,
+      "stop_reason": "end_turn",
+      "session_id": "67531f35-33d4-4e16-9202-a2569b12d939",
+      "permission_denials": [],
+      "prompt_chars": 6123,
+      "prompt_lines": 137,
+      "source": "provider",
+      "attempt": 1
+    },
+    "telemetry_history": [
+      {
+        "cost_usd": 0.28237905,
+        "duration_ms": 110207,
+        "duration_api_ms": 105210,
+        "num_turns": 18,
+        "input_tokens": 17,
+        "output_tokens": 6751,
+        "cache_creation_tokens": 20315,
+        "cache_read_tokens": 349606,
+        "stop_reason": "end_turn",
+        "session_id": "67531f35-33d4-4e16-9202-a2569b12d939",
+        "permission_denials": [],
+        "prompt_chars": 6123,
+        "prompt_lines": 137,
+        "source": "provider",
+        "attempt": 1
+      }
+    ],
+    "last_commit": "ac0c73f2902f0e3c267440798057c54c3c1916c8"
   },
   "labels": [],
   "recovery_for": null,
