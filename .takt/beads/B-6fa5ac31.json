@@ -92,6 +92,15 @@
       "agent_type": "developer",
       "summary": "Worker started",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-13T21:13:50.632257+00:00",
+      "event": "guardrails_applied",
+      "agent_type": "developer",
+      "summary": "Applied guardrails from .takt/agent-runs/B-6fa5ac31/repo/templates/agents/developer.md",
+      "details": {
+        "template_path": ".takt/agent-runs/B-6fa5ac31/repo/templates/agents/developer.md"
+      }
     }
   ],
   "metadata": {
@@ -108,7 +117,65 @@
     ],
     "skill_bundle_hash": "2cbacb3ae07c8eee2a6bb3d65b99b3e4df7fa47ac8b10c5c68be4b338a583348",
     "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-6fa5ac31/home",
-    "runner_backend": "claude"
+    "runner_backend": "claude",
+    "guardrails": {
+      "agent_type": "developer",
+      "template_path": ".takt/agent-runs/B-6fa5ac31/repo/templates/agents/developer.md",
+      "template_text": "# Developer Guardrails\n\nPrimary responsibility: Implement only the assigned bead inside the existing architecture and file scope.\n\nAllowed actions:\n- Modify code, configuration, or local docs required to complete the assigned bead.\n- Create sub-beads for discovered follow-up work that should be handled separately.\n- Verify your `Python` changes compile and import correctly with a quick syntax check: `python -m py_compile`.\n\nDisallowed actions:\n- Run any test suite \u2014 not even a targeted `pytest` run or any subset. Test execution is exclusively the tester agent's responsibility. Running tests wastes the agent budget and delays the pipeline.\n- Redesign unrelated architecture or broaden scope beyond the assigned bead.\n- Perform final review signoff in place of a review agent.\n- Silently absorb unrelated test, documentation, or planning work that should be handed off.\n\nExpected outputs:\n- Completed or blocked JSON with concise implementation summary.\n- Accurate touched files, changed files, risks, and follow-up handoff fields.",
+      "captured_at": "2026-04-13T21:13:50.632246+00:00"
+    },
+    "worker_prompt_context": {
+      "bead_id": "B-6fa5ac31",
+      "feature_root_id": "B-f993e1f7",
+      "title": "ops/clean.py: orphan file detection and removal",
+      "agent_type": "developer",
+      "description": "Implement `pypptx/ops/clean.py` with `clean_unused_files(path: Path) -> list[str]`. If `path` is a `.pptx`, unpack to a temp dir, clean, and repack in-place. If a directory, operate directly. Orphan detection: walk all `.rels` files transitively to find reachable files, then remove anything not reachable (slides missing from `sldIdLst`, their `.rels`, unreferenced media/charts/etc.). Update `[Content_Types].xml` and `presentation.xml.rels`. Iterate until convergence.",
+      "status": "in_progress",
+      "acceptance_criteria": [
+        "`clean_unused_files()` accepts both a `.pptx` path and an unpacked directory path.",
+        "Reachability walk is fully transitive and iterates until no more removals occur.",
+        "Slides not listed in `sldIdLst` and their `.rels` counterparts are detected and removed.",
+        "Unreachable media, embeddings, charts, diagrams, drawings, tags, ink, notesSlides are removed.",
+        "`[Content_Types].xml` and `presentation.xml.rels` are updated to reflect removed files.",
+        "Returns an empty list `[]` when nothing was removed.",
+        "All XML parsing uses `defusedxml`."
+      ],
+      "dependencies": [
+        "B-338d86fc",
+        "B-dd655ec2"
+      ],
+      "linked_docs": [
+        "specs/drafts/pypptx-cli-powerpoint-manipulation-toolkit.md"
+      ],
+      "execution_branch_name": "feature/b-f993e1f7",
+      "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f993e1f7",
+      "expected_files": [
+        "pypptx/ops/clean.py"
+      ],
+      "expected_globs": [],
+      "touched_files": [],
+      "conflict_risks": "",
+      "handoff_summary": {
+        "completed": "",
+        "remaining": "",
+        "risks": "",
+        "verdict": "",
+        "findings_count": 0,
+        "requires_followup": false,
+        "changed_files": [],
+        "updated_docs": [],
+        "next_action": "",
+        "next_agent": "",
+        "block_reason": "",
+        "expected_files": [],
+        "expected_globs": [],
+        "touched_files": [],
+        "conflict_risks": "",
+        "design_decisions": "",
+        "test_coverage_notes": "",
+        "known_limitations": ""
+      }
+    }
   },
   "labels": [],
   "recovery_for": null,
