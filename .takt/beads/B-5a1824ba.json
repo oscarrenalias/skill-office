@@ -94,6 +94,15 @@
       "agent_type": "developer",
       "summary": "Worker started",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-13T21:20:43.622646+00:00",
+      "event": "guardrails_applied",
+      "agent_type": "developer",
+      "summary": "Applied guardrails from .takt/agent-runs/B-5a1824ba/repo/templates/agents/developer.md",
+      "details": {
+        "template_path": ".takt/agent-runs/B-5a1824ba/repo/templates/agents/developer.md"
+      }
     }
   ],
   "metadata": {
@@ -110,7 +119,67 @@
     ],
     "skill_bundle_hash": "2cbacb3ae07c8eee2a6bb3d65b99b3e4df7fa47ac8b10c5c68be4b338a583348",
     "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-5a1824ba/home",
-    "runner_backend": "claude"
+    "runner_backend": "claude",
+    "guardrails": {
+      "agent_type": "developer",
+      "template_path": ".takt/agent-runs/B-5a1824ba/repo/templates/agents/developer.md",
+      "template_text": "# Developer Guardrails\n\nPrimary responsibility: Implement only the assigned bead inside the existing architecture and file scope.\n\nAllowed actions:\n- Modify code, configuration, or local docs required to complete the assigned bead.\n- Create sub-beads for discovered follow-up work that should be handled separately.\n- Verify your `Python` changes compile and import correctly with a quick syntax check: `python -m py_compile`.\n\nDisallowed actions:\n- Run any test suite \u2014 not even a targeted `pytest` run or any subset. Test execution is exclusively the tester agent's responsibility. Running tests wastes the agent budget and delays the pipeline.\n- Redesign unrelated architecture or broaden scope beyond the assigned bead.\n- Perform final review signoff in place of a review agent.\n- Silently absorb unrelated test, documentation, or planning work that should be handed off.\n\nExpected outputs:\n- Completed or blocked JSON with concise implementation summary.\n- Accurate touched files, changed files, risks, and follow-up handoff fields.",
+      "captured_at": "2026-04-13T21:20:43.622633+00:00"
+    },
+    "worker_prompt_context": {
+      "bead_id": "B-5a1824ba",
+      "feature_root_id": "B-f993e1f7",
+      "title": "ops/slides.py: write operations and pptx_edit context manager",
+      "agent_type": "developer",
+      "description": "Extend `pypptx/ops/slides.py` with the `pptx_edit(path)` context manager and write operations: `add_slide()`, `delete_slide()`, and `move_slide()`. The context manager unpacks to a temp dir on enter; on normal exit it cleans and repacks atomically; on exception it leaves the original file untouched. `add_slide` handles both `--duplicate` (strip notes relationship from copy) and `--layout` modes. All indexing is 1-based at the interface boundary.",
+      "status": "in_progress",
+      "acceptance_criteria": [
+        "`pptx_edit()` is a context manager yielding the temp unpacked path.",
+        "On clean exit: `clean_unused_files()` is called, then the directory is repacked over the original atomically.",
+        "On exception: the original `.pptx` is not modified.",
+        "`add_slide(path, duplicate=N)` strips the notes-slide relationship from the duplicated slide's `.rels`.",
+        "`add_slide(path, layout=N)` creates a blank slide from the specified layout index.",
+        "`delete_slide(path, index)` removes the slide at 1-based index and returns `{deleted_file, deleted_index}`.",
+        "`move_slide(path, from_idx, to_idx)` reorders `sldIdLst` and returns `{file, from, to}`.",
+        "Exactly one of `duplicate` or `layout` must be provided to `add_slide`; raises `ValueError` otherwise."
+      ],
+      "dependencies": [
+        "B-9ec19a2c",
+        "B-6fa5ac31",
+        "B-dd655ec2"
+      ],
+      "linked_docs": [
+        "specs/drafts/pypptx-cli-powerpoint-manipulation-toolkit.md"
+      ],
+      "execution_branch_name": "feature/b-f993e1f7",
+      "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f993e1f7",
+      "expected_files": [
+        "pypptx/ops/slides.py"
+      ],
+      "expected_globs": [],
+      "touched_files": [],
+      "conflict_risks": "",
+      "handoff_summary": {
+        "completed": "",
+        "remaining": "",
+        "risks": "",
+        "verdict": "",
+        "findings_count": 0,
+        "requires_followup": false,
+        "changed_files": [],
+        "updated_docs": [],
+        "next_action": "",
+        "next_agent": "",
+        "block_reason": "",
+        "expected_files": [],
+        "expected_globs": [],
+        "touched_files": [],
+        "conflict_risks": "",
+        "design_decisions": "",
+        "test_coverage_notes": "",
+        "known_limitations": ""
+      }
+    }
   },
   "labels": [],
   "recovery_for": null,
