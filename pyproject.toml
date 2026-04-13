@@ -20,3 +20,8 @@ thumbnails = [
 
 [project.scripts]
 pypptx = "pypptx.cli:cli"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]
