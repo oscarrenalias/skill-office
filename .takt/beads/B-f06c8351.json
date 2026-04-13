@@ -3,7 +3,7 @@
   "title": "cli.py: unpack and pack commands",
   "agent_type": "developer",
   "description": "Wire `pypptx unpack <file.pptx> [output_dir]` and `pypptx pack <unpacked_dir> <output.pptx>` into `cli.py`. Each command calls the corresponding `ops.pack` function, formats output via `output_result()`, and passes `--plain` through. Errors caught at the top level are written to stderr and exit with code 1.",
-  "status": "in_progress",
+  "status": "done",
   "bead_type": "task",
   "parent_id": "B-f993e1f7",
   "dependencies": [
@@ -28,37 +28,48 @@
     "pypptx/cli.py"
   ],
   "expected_globs": [],
-  "touched_files": [],
-  "changed_files": [],
+  "touched_files": [
+    "pypptx/__pycache__/cli.cpython-314.pyc",
+    "pypptx/cli.py"
+  ],
+  "changed_files": [
+    "pypptx/__pycache__/cli.cpython-314.pyc",
+    "pypptx/cli.py"
+  ],
   "updated_docs": [],
   "handoff_summary": {
-    "completed": "",
-    "remaining": "",
-    "risks": "",
-    "verdict": "",
+    "completed": "- Added `@cli.command(\"unpack\")` that accepts `file` (required) and `output_dir` (optional, defaults to `file.stem`), calls `ops.pack.unpack()`, and outputs `{\"unpacked_dir\": ...}` or plain dir name with `--plain`. - Added `@cli.command(\"pack\")` that accepts `src_dir` and `output_file`, calls `ops.pack.pack()`, and outputs `{\"output_file\": ...}` or plain filename with `--plain`. - Both commands write errors to stderr via `click.echo(..., err=True)` and exit with code 1. - Syntax verified with `python -m py_compile`.",
+    "remaining": "None.",
+    "risks": "None identified. The `ops.pack` module already handles all error conditions (missing file, not a ZIP, missing [Content_Types].xml, etc.) and raises `ValueError`/OS exceptions that the CLI catches.",
+    "verdict": "approved",
     "findings_count": 0,
     "requires_followup": false,
-    "changed_files": [],
+    "changed_files": [
+      "pypptx/__pycache__/cli.cpython-314.pyc",
+      "pypptx/cli.py"
+    ],
     "updated_docs": [],
-    "next_action": "",
-    "next_agent": "",
+    "next_action": "Tester bead should verify all six acceptance criteria end-to-end.",
+    "next_agent": "tester",
     "block_reason": "",
-    "expected_files": [],
+    "expected_files": [
+      "pypptx/cli.py"
+    ],
     "expected_globs": [],
-    "touched_files": [],
-    "conflict_risks": "",
-    "design_decisions": "",
-    "test_coverage_notes": "",
-    "known_limitations": ""
+    "touched_files": [
+      "pypptx/__pycache__/cli.cpython-314.pyc",
+      "pypptx/cli.py"
+    ],
+    "conflict_risks": "None. Only `pypptx/cli.py` was modified; no other in-progress beads claim this file.",
+    "design_decisions": "Defaulted `output_dir` to `Path(file.stem)` (relative to CWD at invocation time) matching the acceptance criterion `pypptx unpack deck.pptx` \u2192 extracts to `deck`. Used lazy imports (inside command body) consistent with existing `extract-text` command style.",
+    "test_coverage_notes": "All six acceptance criteria map directly to testable CLI invocations; tester bead should cover: default output dir, explicit output dir, --plain for both commands, and error paths (missing file, bad zip).",
+    "known_limitations": "None."
   },
   "block_reason": "",
-  "conflict_risks": "",
+  "conflict_risks": "None. Only `pypptx/cli.py` was modified; no other in-progress beads claim this file.",
   "branch_name": "feature/b-f993e1f7",
   "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f993e1f7",
-  "lease": {
-    "owner": "developer:B-f06c8351",
-    "expires_at": "2026-04-13T21:45:28.094711+00:00"
-  },
+  "lease": null,
   "retries": 0,
   "execution_history": [
     {
@@ -100,6 +111,13 @@
       "details": {
         "template_path": ".takt/agent-runs/B-f06c8351/repo/templates/agents/developer.md"
       }
+    },
+    {
+      "timestamp": "2026-04-13T21:16:24.634499+00:00",
+      "event": "completed",
+      "agent_type": "developer",
+      "summary": "Added `unpack` and `pack` CLI commands to `pypptx/cli.py`. Both commands follow the existing pattern: lazy-import the ops function, catch exceptions and write to stderr with `sys.exit(1)`, and format output via `output_result()` supporting `--plain`. The `unpack` command defaults `output_dir` to the file stem when omitted.",
+      "details": {}
     }
   ],
   "metadata": {
@@ -173,7 +191,53 @@
         "test_coverage_notes": "",
         "known_limitations": ""
       }
-    }
+    },
+    "last_agent_result": {
+      "outcome": "completed",
+      "summary": "Added `unpack` and `pack` CLI commands to `pypptx/cli.py`. Both commands follow the existing pattern: lazy-import the ops function, catch exceptions and write to stderr with `sys.exit(1)`, and format output via `output_result()` supporting `--plain`. The `unpack` command defaults `output_dir` to the file stem when omitted.",
+      "verdict": "approved",
+      "findings_count": 0,
+      "requires_followup": false,
+      "next_agent": "tester",
+      "block_reason": ""
+    },
+    "telemetry": {
+      "cost_usd": 0.16597409999999999,
+      "duration_ms": 55332,
+      "duration_api_ms": 49909,
+      "num_turns": 13,
+      "input_tokens": 12,
+      "output_tokens": 2998,
+      "cache_creation_tokens": 15942,
+      "cache_read_tokens": 203952,
+      "stop_reason": "end_turn",
+      "session_id": "3f2a5975-2caf-44ba-9120-c435f2083c2e",
+      "permission_denials": [],
+      "prompt_chars": 6054,
+      "prompt_lines": 137,
+      "source": "provider",
+      "attempt": 1
+    },
+    "telemetry_history": [
+      {
+        "cost_usd": 0.16597409999999999,
+        "duration_ms": 55332,
+        "duration_api_ms": 49909,
+        "num_turns": 13,
+        "input_tokens": 12,
+        "output_tokens": 2998,
+        "cache_creation_tokens": 15942,
+        "cache_read_tokens": 203952,
+        "stop_reason": "end_turn",
+        "session_id": "3f2a5975-2caf-44ba-9120-c435f2083c2e",
+        "permission_denials": [],
+        "prompt_chars": 6054,
+        "prompt_lines": 137,
+        "source": "provider",
+        "attempt": 1
+      }
+    ],
+    "last_commit": "485ee3ffcd4c7e9108f7c8c93fb93b3cbce543a8"
   },
   "labels": [],
   "recovery_for": null,
