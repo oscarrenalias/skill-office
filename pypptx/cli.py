@@ -122,3 +122,45 @@ def pack_cmd(src_dir: Path, output_file: Path, plain: bool) -> None:
 @cli.group()
 def slide() -> None:
     """Commands for working with slides."""
+
+
+@slide.command("list")
+@click.argument("path", type=click.Path(exists=True, path_type=Path))
+@click.option("--plain", is_flag=True, default=False, help="Output plain text instead of JSON.")
+def slide_list_cmd(path: Path, plain: bool) -> None:
+    """List slides in a .pptx file or unpacked directory."""
+    from pypptx.ops.slides import list_slides
+
+    try:
+        slides = list_slides(path)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+    output_result(
+        {"slides": slides},
+        plain,
+        lambda d: "\n".join(
+            s["file"] + (" [hidden]" if s["hidden"] else "") for s in d["slides"]
+        ),
+    )
+
+
+@slide.command("layouts")
+@click.argument("path", type=click.Path(exists=True, path_type=Path))
+@click.option("--plain", is_flag=True, default=False, help="Output plain text instead of JSON.")
+def slide_layouts_cmd(path: Path, plain: bool) -> None:
+    """List slide layouts in a .pptx file or unpacked directory."""
+    from pypptx.ops.slides import list_layouts
+
+    try:
+        layouts = list_layouts(path)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+    output_result(
+        {"layouts": layouts},
+        plain,
+        lambda d: "\n".join(l["file"] for l in d["layouts"]),
+    )
