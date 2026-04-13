@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-f993e1f7",
-  "dependencies": [],
+  "dependencies": [
+    "B-338d86fc"
+  ],
   "acceptance_criteria": [
     "`list_slides()` returns entries in presentation order; `index` is 1-based.",
     "`hidden` is `True` only when the slide's `show` attribute is explicitly `false`/`0`.",
