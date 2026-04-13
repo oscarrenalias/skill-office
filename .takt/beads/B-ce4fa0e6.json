@@ -3,7 +3,7 @@
   "title": "ops/extract.py: text extraction",
   "agent_type": "developer",
   "description": "Implement `pypptx/ops/extract.py` with `extract_text(path: Path, slides: list[int] | None = None) -> str`. Iterates over all slides (or the specified 1-based subset), sorts shapes by vertical then horizontal position for reading order, and returns the full text with `--- Slide N ---` delimiters. Uses python-pptx.",
-  "status": "in_progress",
+  "status": "done",
   "bead_type": "task",
   "parent_id": "B-f993e1f7",
   "dependencies": [
@@ -26,37 +26,44 @@
     "pypptx/ops/extract.py"
   ],
   "expected_globs": [],
-  "touched_files": [],
-  "changed_files": [],
+  "touched_files": [
+    "pypptx/ops/extract.py"
+  ],
+  "changed_files": [
+    "pypptx/ops/extract.py"
+  ],
   "updated_docs": [],
   "handoff_summary": {
-    "completed": "",
-    "remaining": "",
-    "risks": "",
-    "verdict": "",
+    "completed": "Created `pypptx/ops/extract.py` implementing `extract_text(path: Path, slides: list[int] | None = None) -> str`. All acceptance criteria satisfied: delimiter lines, top-then-left sort, slide filtering, silent skip of non-text shapes, string return.",
+    "remaining": "None for this bead.",
+    "risks": "None identified. The `top`/`left` guard for `None` handles placeholders that lack explicit positioning.",
+    "verdict": "approved",
     "findings_count": 0,
     "requires_followup": false,
-    "changed_files": [],
+    "changed_files": [
+      "pypptx/ops/extract.py"
+    ],
     "updated_docs": [],
-    "next_action": "",
-    "next_agent": "",
+    "next_action": "Tester agent should validate extract_text output against a sample .pptx with multiple slides, mixed shape types, and a slides filter.",
+    "next_agent": "tester",
     "block_reason": "",
-    "expected_files": [],
+    "expected_files": [
+      "pypptx/ops/extract.py"
+    ],
     "expected_globs": [],
-    "touched_files": [],
-    "conflict_risks": "",
-    "design_decisions": "",
-    "test_coverage_notes": "",
-    "known_limitations": ""
+    "touched_files": [
+      "pypptx/ops/extract.py"
+    ],
+    "conflict_risks": "None. Only new file created; no existing files modified.",
+    "design_decisions": "Guarded `s.top` and `s.left` against `None` (some placeholder shapes have no explicit position) by defaulting to 0 so the sort key never raises. Paragraph text is assembled from runs (preserving run-level formatting boundaries) rather than using `shape.text_frame.text` to stay consistent with how python-pptx exposes structured text.",
+    "test_coverage_notes": "No tests written (developer role). Tester should cover: all-slides path, filtered-slides path, non-text shape skipping, reading-order sort, and empty presentation edge case.",
+    "known_limitations": "Shapes with `None` top/left both map to position 0, so their relative order among each other is undefined (stable sort preserves original XML order, which is typically fine)."
   },
   "block_reason": "",
-  "conflict_risks": "",
+  "conflict_risks": "None. Only new file created; no existing files modified.",
   "branch_name": "feature/b-f993e1f7",
   "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f993e1f7",
-  "lease": {
-    "owner": "developer:B-ce4fa0e6",
-    "expires_at": "2026-04-13T21:42:24.384931+00:00"
-  },
+  "lease": null,
   "retries": 0,
   "execution_history": [
     {
@@ -98,6 +105,13 @@
       "details": {
         "template_path": ".takt/agent-runs/B-ce4fa0e6/repo/templates/agents/developer.md"
       }
+    },
+    {
+      "timestamp": "2026-04-13T21:13:34.601020+00:00",
+      "event": "completed",
+      "agent_type": "developer",
+      "summary": "Implemented `pypptx/ops/extract.py` with `extract_text(path, slides)`. Iterates over all slides (or a 1-based subset when `slides` is provided), sorts shapes by `(top, left)` for reading order, collects non-empty paragraph text from text frames, and returns a string with `--- Slide N ---` delimiters. Syntax verified clean with `py_compile`.",
+      "details": {}
     }
   ],
   "metadata": {
@@ -169,7 +183,52 @@
         "test_coverage_notes": "",
         "known_limitations": ""
       }
-    }
+    },
+    "last_agent_result": {
+      "outcome": "completed",
+      "summary": "Implemented `pypptx/ops/extract.py` with `extract_text(path, slides)`. Iterates over all slides (or a 1-based subset when `slides` is provided), sorts shapes by `(top, left)` for reading order, collects non-empty paragraph text from text frames, and returns a string with `--- Slide N ---` delimiters. Syntax verified clean with `py_compile`.",
+      "verdict": "approved",
+      "findings_count": 0,
+      "requires_followup": false,
+      "next_agent": "tester",
+      "block_reason": ""
+    },
+    "telemetry": {
+      "cost_usd": 0.21396569999999998,
+      "duration_ms": 67790,
+      "duration_api_ms": 57440,
+      "num_turns": 22,
+      "input_tokens": 19,
+      "output_tokens": 3222,
+      "cache_creation_tokens": 14610,
+      "cache_read_tokens": 369304,
+      "stop_reason": "end_turn",
+      "session_id": "4fb4ff11-e4c2-40d0-8227-7f04106ea830",
+      "permission_denials": [],
+      "prompt_chars": 5997,
+      "prompt_lines": 135,
+      "source": "provider",
+      "attempt": 1
+    },
+    "telemetry_history": [
+      {
+        "cost_usd": 0.21396569999999998,
+        "duration_ms": 67790,
+        "duration_api_ms": 57440,
+        "num_turns": 22,
+        "input_tokens": 19,
+        "output_tokens": 3222,
+        "cache_creation_tokens": 14610,
+        "cache_read_tokens": 369304,
+        "stop_reason": "end_turn",
+        "session_id": "4fb4ff11-e4c2-40d0-8227-7f04106ea830",
+        "permission_denials": [],
+        "prompt_chars": 5997,
+        "prompt_lines": 135,
+        "source": "provider",
+        "attempt": 1
+      }
+    ]
   },
   "labels": [],
   "recovery_for": null,
