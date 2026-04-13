@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-f993e1f7",
-  "dependencies": [],
+  "dependencies": [
+    "B-338d86fc"
+  ],
   "acceptance_criteria": [
     "`extract_text()` produces output with `--- Slide N ---` delimiter lines where N is the 1-based slide index.",
     "Shapes within each slide are sorted top-to-bottom, left-to-right by their `top` and `left` position attributes.",
