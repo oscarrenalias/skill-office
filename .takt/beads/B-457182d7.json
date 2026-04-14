@@ -7,10 +7,10 @@
   "bead_type": "task",
   "parent_id": "B-90115bee",
   "dependencies": [
-    "B-bae205b8",
-    "B-d71811b9",
     "B-23fe63b6",
-    "B-379f2433"
+    "B-379f2433",
+    "B-bae205b8",
+    "B-d71811b9"
   ],
   "acceptance_criteria": [
     "pypptx.py implementation matches the spec pattern exactly",
