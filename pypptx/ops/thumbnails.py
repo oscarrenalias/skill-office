@@ -243,7 +243,9 @@ def _render_slide_images(
     # Determine hidden status for each slide.
     # slide.show is None → visible (attribute not explicitly set); False → hidden.
     prs = Presentation(pptx_path)
-    hidden_flags: list[bool] = [slide.show is False for slide in prs.slides]
+    hidden_flags: list[bool] = [
+        slide._element.get("show") in ("0", "false") for slide in prs.slides
+    ]
     total_count = len(hidden_flags)
     visible_count = sum(1 for h in hidden_flags if not h)
 
