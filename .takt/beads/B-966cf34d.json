@@ -1,0 +1,70 @@
+{
+  "bead_id": "B-966cf34d",
+  "title": "Add check 5 to verify.py (significant shape overlap)",
+  "agent_type": "developer",
+  "description": "Extend pypptx/ops/verify.py with check 5 (significant shape overlap). Iterate over all pairs of shapes on each slide, skipping any shape whose width or height is below 50,000 EMU. Compute the intersection rectangle of each pair. Report a WARNING when the intersection area exceeds 0.3 sq inches AND exceeds 20% of the smaller shape's area AND neither shape fully contains the other.",
+  "status": "ready",
+  "bead_type": "task",
+  "parent_id": "B-f5bbcf85",
+  "dependencies": [],
+  "acceptance_criteria": [
+    "Check 5 reports WARNING when two non-tiny shapes overlap significantly (>0.3 sq in and >20% of smaller shape)",
+    "Check 5 does not trigger when one shape fully contains the other",
+    "Check 5 does not trigger when either shape is smaller than 50,000 EMU in width or height",
+    "Check 5 does not trigger when overlap area is below 0.3 sq inches",
+    "Check 5 does not trigger when overlap is below 20% of the smaller shape's area",
+    "Check 5 does not trigger on non-overlapping shapes"
+  ],
+  "linked_docs": [
+    "specs/drafts/add-pypptx-verify-command-for-post-generation-validation.md"
+  ],
+  "feature_root_id": "B-f5bbcf85",
+  "execution_branch_name": "feature/b-f5bbcf85",
+  "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f5bbcf85",
+  "expected_files": [
+    "pypptx/ops/verify.py"
+  ],
+  "expected_globs": [],
+  "touched_files": [],
+  "changed_files": [],
+  "updated_docs": [],
+  "handoff_summary": {
+    "completed": "",
+    "remaining": "",
+    "risks": "",
+    "verdict": "",
+    "findings_count": 0,
+    "requires_followup": false,
+    "changed_files": [],
+    "updated_docs": [],
+    "next_action": "",
+    "next_agent": "",
+    "block_reason": "",
+    "expected_files": [],
+    "expected_globs": [],
+    "touched_files": [],
+    "conflict_risks": "",
+    "design_decisions": "",
+    "test_coverage_notes": "",
+    "known_limitations": ""
+  },
+  "block_reason": "",
+  "conflict_risks": "",
+  "branch_name": "",
+  "worktree_path": "",
+  "lease": null,
+  "retries": 0,
+  "execution_history": [
+    {
+      "timestamp": "2026-04-14T18:31:53.207637+00:00",
+      "event": "created",
+      "agent_type": "scheduler",
+      "summary": "Bead created",
+      "details": {}
+    }
+  ],
+  "metadata": {},
+  "labels": [],
+  "recovery_for": null,
+  "priority": null
+}
