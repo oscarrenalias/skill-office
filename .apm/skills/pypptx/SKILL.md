@@ -200,14 +200,24 @@ success, 1 on any error.
 
 Before delivering or committing a modified or newly created `.pptx`:
 
-1. **Re-open with python-pptx** — must not raise:
+1. **Structural validation** — run the built-in quality checks to catch unfilled
+   placeholders, font size issues, shape overflow, text clipping, and significant
+   shape overlap:
+   ```bash
+   python3 pypptx.py verify output.pptx
+   ```
+   Exit code 0 means all checks passed. Non-zero exit means errors were found;
+   review the `errors` list in the JSON output (or use `--plain` for one line per
+   finding).
+
+2. **Re-open with python-pptx** — must not raise:
    ```bash
    .venv/bin/python3 -c "from pptx import Presentation; Presentation('output.pptx')"
    ```
-2. **Slide count** — `python3 pypptx.py slide list output.pptx` matches expectation.
-3. **Text check** — `python3 pypptx.py extract-text output.pptx` to verify content landed in the right slides.
-4. **No orphans** — `python3 pypptx.py clean output.pptx` returns `{"removed": []}`.
-5. **Visual check** — generate a thumbnail grid and read the image file to
+3. **Slide count** — `python3 pypptx.py slide list output.pptx` matches expectation.
+4. **Text check** — `python3 pypptx.py extract-text output.pptx` to verify content landed in the right slides.
+5. **No orphans** — `python3 pypptx.py clean output.pptx` returns `{"removed": []}`.
+6. **Visual check** — generate a thumbnail grid and read the image file to
    verify the output looks correct:
    ```bash
    python3 pypptx.py thumbnails output.pptx
