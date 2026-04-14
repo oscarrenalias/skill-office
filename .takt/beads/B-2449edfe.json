@@ -3,7 +3,7 @@
   "title": "Review verify command implementation",
   "agent_type": "review",
   "description": "Review the complete verify command implementation across verify.py, cli.py, tests/test_verify.py, and SKILL.md. Verify the output contract is maintained (JSON to stdout, errors to stderr, exit codes), all 5 checks match the spec, defusedxml is used for any XML parsing, no brand-specific or template-specific logic was introduced, and all acceptance criteria from the spec are met. Run the full test suite and confirm it passes.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-f5bbcf85",
   "dependencies": [
@@ -238,9 +238,12 @@
   },
   "block_reason": "",
   "conflict_risks": "No conflicts expected \u2014 verify.py is a new file. CLI bead (cli.py) will import from this module; ensure the import path matches .apm/skills/pypptx/pypptx/ops/verify.py.\nNo conflicts expected \u2014 only .apm/skills/pypptx/pypptx/ops/verify.py was modified. Sibling beads touching cli.py or tests/ are unaffected.\nNone \u2014 only verify.py was modified; no overlap with other in-progress beads.\nNone \u2014 only cli.py was modified; no sibling beads claim this file.",
-  "branch_name": "",
+  "branch_name": "feature/b-f5bbcf85",
   "worktree_path": "",
-  "lease": null,
+  "lease": {
+    "owner": "review:B-2449edfe",
+    "expires_at": "2026-04-14T19:40:29.134185+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -249,9 +252,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T19:10:29.431751+00:00",
+      "event": "skills_loaded",
+      "agent_type": "review",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/reviewer-signoff",
+          "capability/code-review",
+          "task/corrective-bead-creation",
+          "task/risk-assessment",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-14T19:10:29.431773+00:00",
+      "event": "started",
+      "agent_type": "review",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-2449edfe",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/reviewer-signoff",
+      "capability/code-review",
+      "task/corrective-bead-creation",
+      "task/risk-assessment",
+      "memory"
+    ],
+    "skill_bundle_hash": "e49ae02cdd641b1b539810ca3dc9f7cb45c7fa56ae2c7f96d6d53ebce3109bd4",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-2449edfe/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
