@@ -170,6 +170,51 @@ def thumbnails_cmd(file: Path, output_prefix: str, cols: int, plain: bool) -> No
     )
 
 
+@cli.command("verify")
+@click.argument("file", type=click.Path(exists=True, path_type=Path))
+@click.option("--plain", is_flag=True, default=False, help="Output plain text instead of JSON.")
+def verify_cmd(file: Path, plain: bool) -> None:
+    """Run quality checks on a .pptx file."""
+    from pypptx.ops.verify import verify_pptx
+
+    try:
+        result = verify_pptx(file)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+    errors = result["errors"]
+    warnings = result["warnings"]
+    slide_count = result["slide_count"]
+
+    data = {
+        "errors": errors,
+        "warnings": warnings,
+        "passed": len(errors) == 0,
+        "slide_count": slide_count,
+        "error_count": len(errors),
+        "warning_count": len(warnings),
+    }
+
+    def plain_fn(d: dict) -> str:
+        lines = []
+        for msg in d["errors"]:
+            lines.append(f"FAIL {msg}")
+        for msg in d["warnings"]:
+            lines.append(f"WARN {msg}")
+        return "\n".join(lines)
+
+    if plain:
+        text = plain_fn(data)
+        if text:
+            sys.stdout.write(text + "\n")
+    else:
+        sys.stdout.write(json.dumps(data) + "\n")
+
+    if errors:
+        sys.exit(1)
+
+
 @cli.group()
 def slide() -> None:
     """Commands for working with slides."""
