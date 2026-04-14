@@ -6,7 +6,12 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-f5bbcf85",
-  "dependencies": [],
+  "dependencies": [
+    "B-0d1f2859",
+    "B-c91f9ae8",
+    "B-966cf34d",
+    "B-89996fdb"
+  ],
   "acceptance_criteria": [
     "SKILL.md QA checklist contains pypptx verify as step 1",
     "pypptx verify entry appears before the thumbnail check step in the list",
