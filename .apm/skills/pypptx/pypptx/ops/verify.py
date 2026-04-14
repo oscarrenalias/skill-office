@@ -240,6 +240,109 @@ def _check_text_clipping(
             )
 
 
+# ── Check 5: significant shape overlap ───────────────────────────────────────
+
+_TINY_SHAPE_THRESHOLD = 50_000  # EMU — skip shapes smaller than this
+_OVERLAP_AREA_THRESHOLD = 0.3 * _EMU_PER_INCH * _EMU_PER_INCH  # 0.3 sq in in EMU²
+_OVERLAP_FRACTION_THRESHOLD = 0.20  # 20% of the smaller shape's area
+
+
+def _shape_area(shape) -> int:
+    """Return the area of a shape in EMU²."""
+    w = shape.width
+    h = shape.height
+    if w is None or h is None:
+        return 0
+    return int(w) * int(h)
+
+
+def _intersection_area(a, b) -> int:
+    """Return the intersection area (in EMU²) of two shapes' bounding boxes."""
+    a_left = int(a.left or 0)
+    a_top = int(a.top or 0)
+    a_right = a_left + int(a.width or 0)
+    a_bottom = a_top + int(a.height or 0)
+
+    b_left = int(b.left or 0)
+    b_top = int(b.top or 0)
+    b_right = b_left + int(b.width or 0)
+    b_bottom = b_top + int(b.height or 0)
+
+    inter_left = max(a_left, b_left)
+    inter_top = max(a_top, b_top)
+    inter_right = min(a_right, b_right)
+    inter_bottom = min(a_bottom, b_bottom)
+
+    if inter_right <= inter_left or inter_bottom <= inter_top:
+        return 0
+    return (inter_right - inter_left) * (inter_bottom - inter_top)
+
+
+def _fully_contains(outer, inner) -> bool:
+    """Return True if outer's bounding box fully contains inner's."""
+    o_left = int(outer.left or 0)
+    o_top = int(outer.top or 0)
+    o_right = o_left + int(outer.width or 0)
+    o_bottom = o_top + int(outer.height or 0)
+
+    i_left = int(inner.left or 0)
+    i_top = int(inner.top or 0)
+    i_right = i_left + int(inner.width or 0)
+    i_bottom = i_top + int(inner.height or 0)
+
+    return o_left <= i_left and o_top <= i_top and o_right >= i_right and o_bottom >= i_bottom
+
+
+def _check_shape_overlap(
+    slide_index: int,
+    slide,
+    warnings: list[str],
+) -> None:
+    """Check 5: warn when two non-tiny shapes overlap significantly."""
+    shapes = list(slide.shapes)
+    for i in range(len(shapes)):
+        a = shapes[i]
+        # Skip tiny shapes
+        w_a = a.width
+        h_a = a.height
+        if w_a is None or h_a is None:
+            continue
+        if int(w_a) < _TINY_SHAPE_THRESHOLD or int(h_a) < _TINY_SHAPE_THRESHOLD:
+            continue
+
+        for j in range(i + 1, len(shapes)):
+            b = shapes[j]
+            w_b = b.width
+            h_b = b.height
+            if w_b is None or h_b is None:
+                continue
+            if int(w_b) < _TINY_SHAPE_THRESHOLD or int(h_b) < _TINY_SHAPE_THRESHOLD:
+                continue
+
+            inter = _intersection_area(a, b)
+            if inter <= 0:
+                continue
+
+            # Skip if one fully contains the other
+            if _fully_contains(a, b) or _fully_contains(b, a):
+                continue
+
+            area_a = _shape_area(a)
+            area_b = _shape_area(b)
+            smaller_area = min(area_a, area_b)
+            if smaller_area <= 0:
+                continue
+
+            # Both thresholds must be exceeded
+            if inter > _OVERLAP_AREA_THRESHOLD and inter > _OVERLAP_FRACTION_THRESHOLD * smaller_area:
+                inter_sq_in = inter / (_EMU_PER_INCH * _EMU_PER_INCH)
+                pct = round(100 * inter / smaller_area)
+                warnings.append(
+                    f"Slide {slide_index}: '{a.name}' and '{b.name}' overlap"
+                    f" significantly ({inter_sq_in:.2f} sq in, {pct}% of smaller shape)"
+                )
+
+
 # ── Public API ────────────────────────────────────────────────────────────────
 
 
@@ -263,6 +366,7 @@ def verify_pptx(path: Path) -> dict:
         _check_font_sizes(slide_index, slide, slide_height, errors)
         _check_shape_overflow(slide_index, slide, slide_width, slide_height, errors)
         _check_text_clipping(slide_index, slide, slide_height, errors, warnings)
+        _check_shape_overlap(slide_index, slide, warnings)
 
     return {
         "errors": errors,
