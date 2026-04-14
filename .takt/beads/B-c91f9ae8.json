@@ -94,6 +94,15 @@
       "agent_type": "developer",
       "summary": "Worker started",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T18:34:14.450860+00:00",
+      "event": "guardrails_applied",
+      "agent_type": "developer",
+      "summary": "Applied guardrails from .takt/agent-runs/B-c91f9ae8/repo/templates/agents/developer.md",
+      "details": {
+        "template_path": ".takt/agent-runs/B-c91f9ae8/repo/templates/agents/developer.md"
+      }
     }
   ],
   "metadata": {
@@ -110,7 +119,67 @@
     ],
     "skill_bundle_hash": "2cbacb3ae07c8eee2a6bb3d65b99b3e4df7fa47ac8b10c5c68be4b338a583348",
     "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-c91f9ae8/home",
-    "runner_backend": "claude"
+    "runner_backend": "claude",
+    "guardrails": {
+      "agent_type": "developer",
+      "template_path": ".takt/agent-runs/B-c91f9ae8/repo/templates/agents/developer.md",
+      "template_text": "# Developer Guardrails\n\nPrimary responsibility: Implement only the assigned bead inside the existing architecture and file scope.\n\nAllowed actions:\n- Modify code, configuration, or local docs required to complete the assigned bead.\n- Create sub-beads for discovered follow-up work that should be handled separately.\n- Verify your `Python` changes compile and import correctly with a quick syntax check: `python -m py_compile`.\n\nDisallowed actions:\n- Run any test suite \u2014 not even a targeted `pytest` run or any subset. Test execution is exclusively the tester agent's responsibility. Running tests wastes the agent budget and delays the pipeline.\n- Redesign unrelated architecture or broaden scope beyond the assigned bead.\n- Perform final review signoff in place of a review agent.\n- Silently absorb unrelated test, documentation, or planning work that should be handed off.\n\nExpected outputs:\n- Completed or blocked JSON with concise implementation summary.\n- Accurate touched files, changed files, risks, and follow-up handoff fields.",
+      "captured_at": "2026-04-14T18:34:14.450844+00:00"
+    },
+    "worker_prompt_context": {
+      "bead_id": "B-c91f9ae8",
+      "feature_root_id": "B-f5bbcf85",
+      "title": "Add checks 3 and 4 to verify.py (shape overflow and text clipping)",
+      "agent_type": "developer",
+      "description": "Extend pypptx/ops/verify.py with check 3 (shape overflow) and check 4 (text clipping). Check 3 compares each shape's bounding box against slide dimensions with 50,000 EMU tolerance and also flags negative left or top values as overflow errors. Check 4 estimates rendered text height by summing font_size_emu * 1.35 * estimated_line_count across paragraphs, where line count uses word_wrap state and chars_per_line = box_width / (0.55 * font_size); warns at >8% overage and errors at >20% overage. Both checks skip table shapes and footer-region shapes (top > 90% of slide height).",
+      "status": "in_progress",
+      "acceptance_criteria": [
+        "Check 3 reports ERROR when left+width > slide_width minus 50000 EMU tolerance",
+        "Check 3 reports ERROR when top+height > slide_height minus 50000 EMU tolerance",
+        "Check 3 reports ERROR when left or top is negative",
+        "Check 3 does not trigger when shapes are within bounds",
+        "Check 4 reports WARNING when estimated text height exceeds shape height by more than 8% but at most 20%",
+        "Check 4 reports ERROR when estimated text height exceeds shape height by more than 20%",
+        "Check 4 message includes estimated height, box height, and percentage overage",
+        "Check 4 skips table shapes",
+        "Check 4 skips footer-region shapes (top > 90% of slide height)",
+        "Check 4 does not trigger on shapes with no text"
+      ],
+      "dependencies": [
+        "B-0d1f2859"
+      ],
+      "linked_docs": [
+        "specs/drafts/add-pypptx-verify-command-for-post-generation-validation.md"
+      ],
+      "execution_branch_name": "feature/b-f5bbcf85",
+      "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f5bbcf85",
+      "expected_files": [
+        "pypptx/ops/verify.py"
+      ],
+      "expected_globs": [],
+      "touched_files": [],
+      "conflict_risks": "",
+      "handoff_summary": {
+        "completed": "",
+        "remaining": "",
+        "risks": "",
+        "verdict": "",
+        "findings_count": 0,
+        "requires_followup": false,
+        "changed_files": [],
+        "updated_docs": [],
+        "next_action": "",
+        "next_agent": "",
+        "block_reason": "",
+        "expected_files": [],
+        "expected_globs": [],
+        "touched_files": [],
+        "conflict_risks": "",
+        "design_decisions": "",
+        "test_coverage_notes": "",
+        "known_limitations": ""
+      }
+    }
   },
   "labels": [],
   "recovery_for": null,
