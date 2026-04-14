@@ -1,0 +1,77 @@
+{
+  "bead_id": "B-677c8330",
+  "title": "Tests for all verify checks and CLI",
+  "agent_type": "tester",
+  "description": "Create tests/test_verify.py with comprehensive tests for all 5 checks and the verify CLI command. Build minimal fixture .pptx files using python-pptx directly in the tests (following the conftest.py pattern already in the project). Each of the 5 checks requires at least one positive test (triggers the check on bad input) and one negative test (clean input produces no issue). Also test --plain output format and exit codes via the Click test runner.",
+  "status": "ready",
+  "bead_type": "task",
+  "parent_id": "B-f5bbcf85",
+  "dependencies": [
+    "B-0d1f2859",
+    "B-c91f9ae8",
+    "B-966cf34d",
+    "B-89996fdb"
+  ],
+  "acceptance_criteria": [
+    "tests/test_verify.py exists and is importable",
+    "At least one positive test (triggers) and one negative test (does not trigger) for each of the 5 checks",
+    "Positive tests assert the exact error/warning message text including slide number and shape name",
+    "Negative tests assert errors and warnings lists are both empty",
+    "--plain output format is tested: FAIL and WARN prefixes present, blank output for clean file",
+    "Exit code 0 tested for a clean file via Click's CliRunner",
+    "Exit code 1 tested for a file with at least one error via Click's CliRunner",
+    "All tests pass under uv run pytest tests/test_verify.py with no warnings"
+  ],
+  "linked_docs": [
+    "specs/drafts/add-pypptx-verify-command-for-post-generation-validation.md"
+  ],
+  "feature_root_id": "B-f5bbcf85",
+  "execution_branch_name": "feature/b-f5bbcf85",
+  "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f5bbcf85",
+  "expected_files": [
+    "tests/test_verify.py"
+  ],
+  "expected_globs": [],
+  "touched_files": [],
+  "changed_files": [],
+  "updated_docs": [],
+  "handoff_summary": {
+    "completed": "",
+    "remaining": "",
+    "risks": "",
+    "verdict": "",
+    "findings_count": 0,
+    "requires_followup": false,
+    "changed_files": [],
+    "updated_docs": [],
+    "next_action": "",
+    "next_agent": "",
+    "block_reason": "",
+    "expected_files": [],
+    "expected_globs": [],
+    "touched_files": [],
+    "conflict_risks": "",
+    "design_decisions": "",
+    "test_coverage_notes": "",
+    "known_limitations": ""
+  },
+  "block_reason": "",
+  "conflict_risks": "",
+  "branch_name": "",
+  "worktree_path": "",
+  "lease": null,
+  "retries": 0,
+  "execution_history": [
+    {
+      "timestamp": "2026-04-14T18:31:54.125661+00:00",
+      "event": "created",
+      "agent_type": "scheduler",
+      "summary": "Bead created",
+      "details": {}
+    }
+  ],
+  "metadata": {},
+  "labels": [],
+  "recovery_for": null,
+  "priority": null
+}

@@ -1,0 +1,76 @@
+{
+  "bead_id": "B-c91f9ae8",
+  "title": "Add checks 3 and 4 to verify.py (shape overflow and text clipping)",
+  "agent_type": "developer",
+  "description": "Extend pypptx/ops/verify.py with check 3 (shape overflow) and check 4 (text clipping). Check 3 compares each shape's bounding box against slide dimensions with 50,000 EMU tolerance and also flags negative left or top values as overflow errors. Check 4 estimates rendered text height by summing font_size_emu * 1.35 * estimated_line_count across paragraphs, where line count uses word_wrap state and chars_per_line = box_width / (0.55 * font_size); warns at >8% overage and errors at >20% overage. Both checks skip table shapes and footer-region shapes (top > 90% of slide height).",
+  "status": "ready",
+  "bead_type": "task",
+  "parent_id": "B-f5bbcf85",
+  "dependencies": [
+    "B-0d1f2859"
+  ],
+  "acceptance_criteria": [
+    "Check 3 reports ERROR when left+width > slide_width minus 50000 EMU tolerance",
+    "Check 3 reports ERROR when top+height > slide_height minus 50000 EMU tolerance",
+    "Check 3 reports ERROR when left or top is negative",
+    "Check 3 does not trigger when shapes are within bounds",
+    "Check 4 reports WARNING when estimated text height exceeds shape height by more than 8% but at most 20%",
+    "Check 4 reports ERROR when estimated text height exceeds shape height by more than 20%",
+    "Check 4 message includes estimated height, box height, and percentage overage",
+    "Check 4 skips table shapes",
+    "Check 4 skips footer-region shapes (top > 90% of slide height)",
+    "Check 4 does not trigger on shapes with no text"
+  ],
+  "linked_docs": [
+    "specs/drafts/add-pypptx-verify-command-for-post-generation-validation.md"
+  ],
+  "feature_root_id": "B-f5bbcf85",
+  "execution_branch_name": "feature/b-f5bbcf85",
+  "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f5bbcf85",
+  "expected_files": [
+    "pypptx/ops/verify.py"
+  ],
+  "expected_globs": [],
+  "touched_files": [],
+  "changed_files": [],
+  "updated_docs": [],
+  "handoff_summary": {
+    "completed": "",
+    "remaining": "",
+    "risks": "",
+    "verdict": "",
+    "findings_count": 0,
+    "requires_followup": false,
+    "changed_files": [],
+    "updated_docs": [],
+    "next_action": "",
+    "next_agent": "",
+    "block_reason": "",
+    "expected_files": [],
+    "expected_globs": [],
+    "touched_files": [],
+    "conflict_risks": "",
+    "design_decisions": "",
+    "test_coverage_notes": "",
+    "known_limitations": ""
+  },
+  "block_reason": "",
+  "conflict_risks": "",
+  "branch_name": "",
+  "worktree_path": "",
+  "lease": null,
+  "retries": 0,
+  "execution_history": [
+    {
+      "timestamp": "2026-04-14T18:31:52.756473+00:00",
+      "event": "created",
+      "agent_type": "scheduler",
+      "summary": "Bead created",
+      "details": {}
+    }
+  ],
+  "metadata": {},
+  "labels": [],
+  "recovery_for": null,
+  "priority": null
+}
