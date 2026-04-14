@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-74563794",
-  "dependencies": [],
+  "dependencies": [
+    "B-407ceaca"
+  ],
   "acceptance_criteria": [
     "pptx_to_jpegs() (or equivalent) runs soffice and pdftoppm as subprocesses",
     "Returns a list of JPEG file paths in page order, one per slide",
