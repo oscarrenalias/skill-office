@@ -91,6 +91,15 @@
       "agent_type": "developer",
       "summary": "Worker started",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T07:42:08.345540+00:00",
+      "event": "guardrails_applied",
+      "agent_type": "developer",
+      "summary": "Applied guardrails from .takt/agent-runs/B-bae205b8/repo/templates/agents/developer.md",
+      "details": {
+        "template_path": ".takt/agent-runs/B-bae205b8/repo/templates/agents/developer.md"
+      }
     }
   ],
   "metadata": {
@@ -107,7 +116,64 @@
     ],
     "skill_bundle_hash": "2cbacb3ae07c8eee2a6bb3d65b99b3e4df7fa47ac8b10c5c68be4b338a583348",
     "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-bae205b8/home",
-    "runner_backend": "claude"
+    "runner_backend": "claude",
+    "guardrails": {
+      "agent_type": "developer",
+      "template_path": ".takt/agent-runs/B-bae205b8/repo/templates/agents/developer.md",
+      "template_text": "# Developer Guardrails\n\nPrimary responsibility: Implement only the assigned bead inside the existing architecture and file scope.\n\nAllowed actions:\n- Modify code, configuration, or local docs required to complete the assigned bead.\n- Create sub-beads for discovered follow-up work that should be handled separately.\n- Verify your `Python` changes compile and import correctly with a quick syntax check: `python -m py_compile`.\n\nDisallowed actions:\n- Run any test suite \u2014 not even a targeted `pytest` run or any subset. Test execution is exclusively the tester agent's responsibility. Running tests wastes the agent budget and delays the pipeline.\n- Redesign unrelated architecture or broaden scope beyond the assigned bead.\n- Perform final review signoff in place of a review agent.\n- Silently absorb unrelated test, documentation, or planning work that should be handed off.\n\nExpected outputs:\n- Completed or blocked JSON with concise implementation summary.\n- Accurate touched files, changed files, risks, and follow-up handoff fields.",
+      "captured_at": "2026-04-14T07:42:08.345524+00:00"
+    },
+    "worker_prompt_context": {
+      "bead_id": "B-bae205b8",
+      "feature_root_id": "B-90115bee",
+      "title": "Create pypptx.py bootstrap entry script",
+      "agent_type": "developer",
+      "description": "Create pypptx.py at the repo root implementing the _bootstrap() function pattern from the spec. The function must: (1) return immediately when str(_VENV) in sys.prefix (already inside managed venv), (2) create .venv using subprocess + stdlib venv module when venv_py does not exist, (3) install click, defusedxml, python-pptx (not Pillow) via venv pip with --quiet, (4) call os.execv to re-execute the full process inside the venv. After bootstrap returns, insert _SKILL_DIR onto sys.path[0] and call pypptx.cli.cli(). Include #!/usr/bin/env python3 shebang and make the file executable (chmod +x).",
+      "status": "in_progress",
+      "acceptance_criteria": [
+        "pypptx.py exists at repo root with #!/usr/bin/env python3 shebang",
+        "_VENV is set to _SKILL_DIR / '.venv' where _SKILL_DIR is Path(__file__).parent",
+        "_DEPS contains exactly ['click', 'defusedxml', 'python-pptx'] \u2014 no Pillow",
+        "_bootstrap() returns immediately when str(_VENV) in sys.prefix",
+        "venv is created via subprocess.check_call([sys.executable, '-m', 'venv', str(_VENV)]) when venv_py is absent",
+        "deps installed via subprocess.check_call([str(venv_py), '-m', 'pip', 'install', '--quiet', *_DEPS])",
+        "os.execv(str(venv_py), [str(venv_py)] + sys.argv) re-executes into venv",
+        "sys.path.insert(0, str(_SKILL_DIR)) placed after _bootstrap() call so pypptx package is importable",
+        "File is chmod +x"
+      ],
+      "dependencies": [],
+      "linked_docs": [
+        "specs/drafts/pypptx-standalone-entry-point-with-self-bootstrapping-venv.md"
+      ],
+      "execution_branch_name": "feature/b-90115bee",
+      "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-90115bee",
+      "expected_files": [
+        "pypptx.py"
+      ],
+      "expected_globs": [],
+      "touched_files": [],
+      "conflict_risks": "",
+      "handoff_summary": {
+        "completed": "",
+        "remaining": "",
+        "risks": "",
+        "verdict": "",
+        "findings_count": 0,
+        "requires_followup": false,
+        "changed_files": [],
+        "updated_docs": [],
+        "next_action": "",
+        "next_agent": "",
+        "block_reason": "",
+        "expected_files": [],
+        "expected_globs": [],
+        "touched_files": [],
+        "conflict_risks": "",
+        "design_decisions": "",
+        "test_coverage_notes": "",
+        "known_limitations": ""
+      }
+    }
   },
   "labels": [],
   "recovery_for": null,
