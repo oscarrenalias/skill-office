@@ -15,6 +15,10 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from PIL import Image as PILImage
 
 
 def check_dependencies() -> None:
@@ -124,3 +128,106 @@ def pptx_to_jpegs(pptx_path: Path | str, temp_dir: Path | str) -> list[Path]:
     # sort matches page order.
     jpegs = sorted(temp_dir.glob(f"{pptx_path.stem}-*.jpg"))
     return jpegs
+
+
+def _make_hatched_placeholder(width: int, height: int) -> "PILImage.Image":
+    """Generate a hatched grey placeholder image for a hidden slide.
+
+    Args:
+        width:  Image width in pixels.
+        height: Image height in pixels.
+
+    Returns:
+        A PIL Image filled with a light grey background and diagonal hatch lines.
+    """
+    from PIL import Image, ImageDraw
+
+    img = Image.new("RGB", (width, height), color=(200, 200, 200))
+    draw = ImageDraw.Draw(img)
+
+    spacing = 20
+    line_color = (160, 160, 160)
+    # Diagonal lines from top-left toward bottom-right, covering the full image.
+    for offset in range(-height, width + height, spacing):
+        draw.line([(offset, 0), (offset + height, height)], fill=line_color, width=1)
+
+    return img
+
+
+def generate_thumbnails(
+    pptx_path: Path | str,
+    temp_dir: Path | str,
+) -> "list[PILImage.Image]":
+    """Generate thumbnail images for every slide in a PPTX file.
+
+    Hidden slides (``slide.show is False``) are represented by a hatched grey
+    placeholder image at the same pixel dimensions as the rendered thumbnails.
+    The returned list always has the same length as the total slide count,
+    preserving index alignment.
+
+    LibreOffice may include or exclude hidden slides when producing the
+    intermediate PDF.  This function detects both cases by comparing the JPEG
+    count against the total and visible slide counts and routes the mapping
+    accordingly.
+
+    Args:
+        pptx_path: Path to the source .pptx file.
+        temp_dir:  Directory for intermediate files (managed by caller).
+
+    Returns:
+        An ordered list of :class:`~PIL.Image.Image` objects, one per slide.
+        Hidden slide positions contain a hatched grey placeholder; visible
+        slide positions contain the rendered thumbnail.
+
+    Raises:
+        RuntimeError: If the conversion pipeline fails or the JPEG count is
+                      inconsistent with the slide metadata.
+    """
+    from PIL import Image
+    from pptx import Presentation
+
+    pptx_path = Path(pptx_path)
+
+    # Determine hidden status for each slide.
+    # slide.show is None → visible (attribute not explicitly set); False → hidden.
+    prs = Presentation(pptx_path)
+    hidden_flags: list[bool] = [slide.show is False for slide in prs.slides]
+    total_count = len(hidden_flags)
+    visible_count = sum(1 for h in hidden_flags if not h)
+
+    jpeg_paths = pptx_to_jpegs(pptx_path, temp_dir)
+    jpeg_count = len(jpeg_paths)
+
+    # Determine reference dimensions from the first available JPEG.
+    if jpeg_paths:
+        with Image.open(jpeg_paths[0]) as ref:
+            ref_width, ref_height = ref.size
+    else:
+        ref_width, ref_height = 960, 540  # sensible fallback
+
+    thumbnails: list[PILImage.Image] = []
+
+    if jpeg_count == total_count:
+        # LibreOffice rendered all slides (including hidden ones).
+        for idx, is_hidden in enumerate(hidden_flags):
+            if is_hidden:
+                thumbnails.append(_make_hatched_placeholder(ref_width, ref_height))
+            else:
+                thumbnails.append(Image.open(jpeg_paths[idx]))
+
+    elif jpeg_count == visible_count:
+        # LibreOffice skipped hidden slides; map JPEGs to visible positions only.
+        jpeg_iter = iter(jpeg_paths)
+        for is_hidden in hidden_flags:
+            if is_hidden:
+                thumbnails.append(_make_hatched_placeholder(ref_width, ref_height))
+            else:
+                thumbnails.append(Image.open(next(jpeg_iter)))
+
+    else:
+        raise RuntimeError(
+            f"Unexpected JPEG count {jpeg_count} for '{pptx_path.name}': "
+            f"expected {total_count} (all slides) or {visible_count} (visible slides only)."
+        )
+
+    return thumbnails
