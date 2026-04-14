@@ -6,7 +6,12 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-680b5593",
-  "dependencies": [],
+  "dependencies": [
+    "B-774f185f",
+    "B-f8eefe9b",
+    "B-d6b5b6f7",
+    "B-975c975b"
+  ],
   "acceptance_criteria": [
     "All developer, tester, and documentation beads are complete",
     "Output contract is preserved across all affected commands",
