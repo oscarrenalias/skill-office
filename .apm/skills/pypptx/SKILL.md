@@ -207,9 +207,19 @@ Before delivering or committing a modified or newly created `.pptx`:
 2. **Slide count** — `python3 pypptx.py slide list output.pptx` matches expectation.
 3. **Text check** — `python3 pypptx.py extract-text output.pptx` to verify content landed in the right slides.
 4. **No orphans** — `python3 pypptx.py clean output.pptx` returns `{"removed": []}`.
-5. **Visual check** (strongly recommended) — `python3 pypptx.py thumbnails output.pptx`
-   and inspect the grid image. Skip this step only if LibreOffice or Poppler
-   is not available in the environment.
+5. **Visual check** — generate a thumbnail grid and read the image file to
+   verify the output looks correct:
+   ```bash
+   python3 pypptx.py thumbnails output.pptx
+   ```
+   Read the generated image (e.g. `thumbnails.jpg`) to view it. Check for:
+   - Text is legible — not white-on-white, not obscured by background elements
+   - Cover layout ("Title Slide") used only on slide 1
+   - No raw text boxes floating over branded backgrounds
+   - Content sits within slide boundaries, not clipped or overflowing
+   - Each slide uses a layout appropriate to its content type
+
+   Skip only if LibreOffice or Poppler is not available in the environment.
 
 ---
 
