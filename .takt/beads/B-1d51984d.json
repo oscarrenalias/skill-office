@@ -3,7 +3,7 @@
   "title": "Review thumbnails command implementation",
   "agent_type": "review",
   "description": "Review the complete thumbnails command implementation for correctness, robust error handling (especially temp-file cleanup on failure paths), code quality, test coverage, and adherence to the spec acceptance criteria.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-74563794",
   "dependencies": [
@@ -207,9 +207,12 @@
   },
   "block_reason": "",
   "conflict_risks": "None \u2014 only pyproject.toml was touched and the change is additive (version constraint only).\nNo conflict risks \u2014 new file, no modifications to existing code.\nNone \u2014 only thumbnails.py was modified; no other in-progress beads touch this file.\nNo conflicts expected; only `pypptx/ops/thumbnails.py` was modified and no sibling beads claim this file.\nNone \u2014 assemble_grid() is a new function added between _make_hatched_placeholder and generate_thumbnails; no existing code modified.\nCLI bead (thumbnails command) must call generate_thumbnails() with the new 4-argument signature (pptx_path, output_prefix, temp_dir, cols). The old 2-argument form no longer exists.\nNone. Only `pypptx/cli.py` was modified; no sibling beads claim this file.",
-  "branch_name": "",
+  "branch_name": "feature/b-74563794",
   "worktree_path": "",
-  "lease": null,
+  "lease": {
+    "owner": "review:B-1d51984d",
+    "expires_at": "2026-04-14T07:26:58.820021+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -218,9 +221,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T06:56:59.355471+00:00",
+      "event": "skills_loaded",
+      "agent_type": "review",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/reviewer-signoff",
+          "capability/code-review",
+          "task/corrective-bead-creation",
+          "task/risk-assessment",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-14T06:56:59.355498+00:00",
+      "event": "started",
+      "agent_type": "review",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-1d51984d",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/reviewer-signoff",
+      "capability/code-review",
+      "task/corrective-bead-creation",
+      "task/risk-assessment",
+      "memory"
+    ],
+    "skill_bundle_hash": "e49ae02cdd641b1b539810ca3dc9f7cb45c7fa56ae2c7f96d6d53ebce3109bd4",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-1d51984d/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
