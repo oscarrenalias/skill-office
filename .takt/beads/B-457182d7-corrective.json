@@ -3,7 +3,7 @@
   "title": "Corrective fix for B-457182d7: Review standalone entry point implementation",
   "agent_type": "developer",
   "description": "Blocked reason: Finding 1: Missing first-run stderr print \u2014 spec and spec AC both require print('pypptx: first run, installing dependencies...', file=sys.stderr); omission violates AC 'matches the spec pattern exactly'. Finding 2: pip install runs outside the if-not-exists block, deviating from spec pattern and causing pip re-run on every cold start. Finding 3 (low): Windows path hardcoded to bin/python rather than platform-conditional.\n\nRemaining work: Three spec deviations need resolution: (1) add print() stderr message on first run; (2) move pip install inside the if-not-exists block; (3) optionally restore Windows path logic.",
-  "status": "in_progress",
+  "status": "done",
   "bead_type": "task",
   "parent_id": "B-457182d7",
   "dependencies": [],
@@ -20,52 +20,60 @@
   "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-90115bee",
   "expected_files": [
     "pypptx.py",
-    ".gitignore",
-    "CLAUDE.md",
     "tests/test_standalone.py"
   ],
   "expected_globs": [],
   "touched_files": [
+    "__pycache__/pypptx.cpython-314.pyc",
     "pypptx.py",
-    ".gitignore",
-    "CLAUDE.md",
+    "tests/__pycache__/test_standalone.cpython-314.pyc",
     "tests/test_standalone.py"
   ],
   "changed_files": [
+    "__pycache__/pypptx.cpython-314.pyc",
     "pypptx.py",
-    ".gitignore",
-    "CLAUDE.md",
+    "tests/__pycache__/test_standalone.cpython-314.pyc",
     "tests/test_standalone.py"
   ],
   "updated_docs": [],
   "handoff_summary": {
-    "completed": "",
-    "remaining": "",
-    "risks": "",
-    "verdict": "",
+    "completed": "All three spec deviations fixed in pypptx.py. Three new unit tests added to tests/test_standalone.py. Both files pass py_compile syntax check.",
+    "remaining": "None \u2014 this corrective bead is complete. Parent bead B-457182d7 can now be retried; its tester pass should verify all tests in test_standalone.py pass, including the three new ones.",
+    "risks": "Low. Changes are confined to pypptx.py bootstrap logic and tests/test_standalone.py. No package code touched. The only behavioral change visible to a second-run caller is the removal of the spurious pip re-install on every cold start \u2014 this is a correctness fix, not a regression risk.",
+    "verdict": "approved",
     "findings_count": 0,
     "requires_followup": false,
-    "changed_files": [],
+    "changed_files": [
+      "__pycache__/pypptx.cpython-314.pyc",
+      "pypptx.py",
+      "tests/__pycache__/test_standalone.cpython-314.pyc",
+      "tests/test_standalone.py"
+    ],
     "updated_docs": [],
-    "next_action": "",
-    "next_agent": "",
+    "next_action": "Route to tester agent to run tests/test_standalone.py (and full suite) against the fixed pypptx.py. After a green test pass, parent bead B-457182d7 can be marked complete.",
+    "next_agent": "tester",
     "block_reason": "",
-    "expected_files": [],
+    "expected_files": [
+      "pypptx.py",
+      "tests/test_standalone.py"
+    ],
     "expected_globs": [],
-    "touched_files": [],
-    "conflict_risks": "",
-    "design_decisions": "",
-    "test_coverage_notes": "",
-    "known_limitations": ""
+    "touched_files": [
+      "__pycache__/pypptx.cpython-314.pyc",
+      "pypptx.py",
+      "tests/__pycache__/test_standalone.cpython-314.pyc",
+      "tests/test_standalone.py"
+    ],
+    "conflict_risks": "Low \u2014 only pypptx.py and tests/test_standalone.py were edited; no overlap expected with other beads.",
+    "design_decisions": "Followed the spec pattern from specs/drafts/pypptx-standalone-entry-point-with-self-bootstrapping-venv.md verbatim. No deviations introduced.",
+    "test_coverage_notes": "Added test_first_run_prints_stderr_message (verifies print call on first run), test_pip_install_runs_only_on_first_run (verifies pip is not called when venv already exists). Existing test_venv_created_when_python_absent and test_execv_called_with_correct_args remain valid with no changes needed.",
+    "known_limitations": "Windows path (Scripts/python.exe) is untested in CI since tests run on macOS/Linux; this matches the spec pattern and is low-risk."
   },
   "block_reason": "",
-  "conflict_risks": "Low \u2014 only pypptx.py and tests/test_standalone.py need targeted edits; no overlap expected with other beads.",
+  "conflict_risks": "Low \u2014 only pypptx.py and tests/test_standalone.py were edited; no overlap expected with other beads.",
   "branch_name": "feature/b-90115bee",
   "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-90115bee",
-  "lease": {
-    "owner": "developer:B-457182d7-corrective",
-    "expires_at": "2026-04-14T08:29:54.154702+00:00"
-  },
+  "lease": null,
   "retries": 0,
   "execution_history": [
     {
@@ -107,6 +115,13 @@
       "details": {
         "template_path": ".takt/agent-runs/B-457182d7-corrective/repo/templates/agents/developer.md"
       }
+    },
+    {
+      "timestamp": "2026-04-14T08:01:31.999309+00:00",
+      "event": "completed",
+      "agent_type": "developer",
+      "summary": "Corrected pypptx.py to match the spec pattern exactly: (1) added print() stderr message on first run inside the if-not-exists block, (2) moved pip install inside that block so it only runs when the venv is absent, (3) restored Windows-conditional venv_py path. Added three new unit tests covering the print message, and the pip-not-called-on-second-run invariant.",
+      "details": {}
     }
   ],
   "metadata": {
@@ -183,7 +198,53 @@
         "test_coverage_notes": "",
         "known_limitations": ""
       }
-    }
+    },
+    "last_agent_result": {
+      "outcome": "completed",
+      "summary": "Corrected pypptx.py to match the spec pattern exactly: (1) added print() stderr message on first run inside the if-not-exists block, (2) moved pip install inside that block so it only runs when the venv is absent, (3) restored Windows-conditional venv_py path. Added three new unit tests covering the print message, and the pip-not-called-on-second-run invariant.",
+      "verdict": "approved",
+      "findings_count": 0,
+      "requires_followup": false,
+      "next_agent": "tester",
+      "block_reason": ""
+    },
+    "telemetry": {
+      "cost_usd": 0.2203908,
+      "duration_ms": 95902,
+      "duration_api_ms": 90715,
+      "num_turns": 12,
+      "input_tokens": 12,
+      "output_tokens": 4963,
+      "cache_creation_tokens": 18332,
+      "cache_read_tokens": 249536,
+      "stop_reason": "end_turn",
+      "session_id": "3a3134f0-ed17-41f6-9674-a53a729d50bd",
+      "permission_denials": [],
+      "prompt_chars": 6461,
+      "prompt_lines": 144,
+      "source": "provider",
+      "attempt": 1
+    },
+    "telemetry_history": [
+      {
+        "cost_usd": 0.2203908,
+        "duration_ms": 95902,
+        "duration_api_ms": 90715,
+        "num_turns": 12,
+        "input_tokens": 12,
+        "output_tokens": 4963,
+        "cache_creation_tokens": 18332,
+        "cache_read_tokens": 249536,
+        "stop_reason": "end_turn",
+        "session_id": "3a3134f0-ed17-41f6-9674-a53a729d50bd",
+        "permission_denials": [],
+        "prompt_chars": 6461,
+        "prompt_lines": 144,
+        "source": "provider",
+        "attempt": 1
+      }
+    ],
+    "last_commit": "505314d9e26515a33bfb84452fbcae30a5f6f47b"
   },
   "labels": [],
   "recovery_for": null,
