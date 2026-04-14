@@ -3,7 +3,7 @@
   "title": "Test standalone entry point",
   "agent_type": "tester",
   "description": "Write tests in tests/test_standalone.py covering the pypptx.py standalone entry script. Tests must cover: (1) unit-test the bootstrap guard \u2014 mock sys.prefix to contain str(_VENV) and assert _bootstrap() returns without calling subprocess; (2) integration test invoking subprocess.run(['python3', 'pypptx.py', '--version']) from the repo root and asserting exit code 0; (3) first-run integration test using a temp copy of the repo root to assert .venv/ is created and stderr contains the bootstrap message; (4) second-run integration test asserting no bootstrap output on stderr. Also run uv run pytest to confirm all pre-existing tests still pass.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-90115bee",
   "dependencies": [
@@ -177,9 +177,12 @@
   },
   "block_reason": "",
   "conflict_risks": "Low \u2014 only .gitignore was touched; no overlap expected with other beads.\nNone. pypptx.py is a new file with no overlap with other beads.",
-  "branch_name": "",
-  "worktree_path": "",
-  "lease": null,
+  "branch_name": "feature/b-90115bee",
+  "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-90115bee",
+  "lease": {
+    "owner": "tester:B-23fe63b6",
+    "expires_at": "2026-04-14T08:13:13.456448+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -188,9 +191,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T07:43:14.093167+00:00",
+      "event": "skills_loaded",
+      "agent_type": "tester",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/tester-validation",
+          "capability/test-execution",
+          "task/defect-bead-creation",
+          "task/regression-triage",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-14T07:43:14.093190+00:00",
+      "event": "started",
+      "agent_type": "tester",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-23fe63b6",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/tester-validation",
+      "capability/test-execution",
+      "task/defect-bead-creation",
+      "task/regression-triage",
+      "memory"
+    ],
+    "skill_bundle_hash": "bc009dcebd8e4c16178a90ec3060a5b91679ac7fedefcdc8f0d5a8eca4b06d22",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-23fe63b6/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
