@@ -8,9 +8,9 @@
   "parent_id": "B-680b5593",
   "dependencies": [
     "B-774f185f",
-    "B-f8eefe9b",
+    "B-975c975b",
     "B-d6b5b6f7",
-    "B-975c975b"
+    "B-f8eefe9b"
   ],
   "acceptance_criteria": [
     "All developer, tester, and documentation beads are complete",
