@@ -213,7 +213,7 @@ def slide_layouts_cmd(path: Path, plain: bool) -> None:
     output_result(
         {"layouts": layouts},
         plain,
-        lambda d: "\n".join(l["file"] for l in d["layouts"]),
+        lambda d: "\n".join(f"{l['file']}  {l['name']}" for l in d["layouts"]),
     )
 
 
