@@ -3,7 +3,7 @@
   "title": "Corrective fix for B-457182d7: Review standalone entry point implementation",
   "agent_type": "developer",
   "description": "Blocked reason: Finding 1: Missing first-run stderr print \u2014 spec and spec AC both require print('pypptx: first run, installing dependencies...', file=sys.stderr); omission violates AC 'matches the spec pattern exactly'. Finding 2: pip install runs outside the if-not-exists block, deviating from spec pattern and causing pip re-run on every cold start. Finding 3 (low): Windows path hardcoded to bin/python rather than platform-conditional.\n\nRemaining work: Three spec deviations need resolution: (1) add print() stderr message on first run; (2) move pip install inside the if-not-exists block; (3) optionally restore Windows path logic.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-457182d7",
   "dependencies": [],
@@ -60,9 +60,12 @@
   },
   "block_reason": "",
   "conflict_risks": "Low \u2014 only pypptx.py and tests/test_standalone.py need targeted edits; no overlap expected with other beads.",
-  "branch_name": "",
-  "worktree_path": "",
-  "lease": null,
+  "branch_name": "feature/b-90115bee",
+  "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-90115bee",
+  "lease": {
+    "owner": "developer:B-457182d7-corrective",
+    "expires_at": "2026-04-14T08:29:54.154702+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -71,10 +74,48 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T07:59:54.483259+00:00",
+      "event": "skills_loaded",
+      "agent_type": "developer",
+      "summary": "Loaded 7 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/developer-implementation",
+          "capability/code-edit",
+          "task/corrective-implementation",
+          "task/refactor-safe",
+          "task/migration",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-14T07:59:54.483283+00:00",
+      "event": "started",
+      "agent_type": "developer",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
   "metadata": {
-    "auto_corrective_for": "B-457182d7"
+    "auto_corrective_for": "B-457182d7",
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-457182d7-corrective",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/developer-implementation",
+      "capability/code-edit",
+      "task/corrective-implementation",
+      "task/refactor-safe",
+      "task/migration",
+      "memory"
+    ],
+    "skill_bundle_hash": "2cbacb3ae07c8eee2a6bb3d65b99b3e4df7fa47ac8b10c5c68be4b338a583348",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-457182d7-corrective/home",
+    "runner_backend": "claude"
   },
   "labels": [],
   "recovery_for": null,
