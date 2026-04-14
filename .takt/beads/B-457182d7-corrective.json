@@ -1,0 +1,82 @@
+{
+  "bead_id": "B-457182d7-corrective",
+  "title": "Corrective fix for B-457182d7: Review standalone entry point implementation",
+  "agent_type": "developer",
+  "description": "Blocked reason: Finding 1: Missing first-run stderr print \u2014 spec and spec AC both require print('pypptx: first run, installing dependencies...', file=sys.stderr); omission violates AC 'matches the spec pattern exactly'. Finding 2: pip install runs outside the if-not-exists block, deviating from spec pattern and causing pip re-run on every cold start. Finding 3 (low): Windows path hardcoded to bin/python rather than platform-conditional.\n\nRemaining work: Three spec deviations need resolution: (1) add print() stderr message on first run; (2) move pip install inside the if-not-exists block; (3) optionally restore Windows path logic.",
+  "status": "ready",
+  "bead_type": "task",
+  "parent_id": "B-457182d7",
+  "dependencies": [],
+  "acceptance_criteria": [
+    "Implement the minimum fix required to unblock B-457182d7.",
+    "Update tests/docs as needed for the corrective change.",
+    "Leave a handoff summary that states how the parent bead can be retried."
+  ],
+  "linked_docs": [
+    "specs/drafts/pypptx-standalone-entry-point-with-self-bootstrapping-venv.md"
+  ],
+  "feature_root_id": "B-90115bee",
+  "execution_branch_name": "feature/b-90115bee",
+  "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-90115bee",
+  "expected_files": [
+    "pypptx.py",
+    ".gitignore",
+    "CLAUDE.md",
+    "tests/test_standalone.py"
+  ],
+  "expected_globs": [],
+  "touched_files": [
+    "pypptx.py",
+    ".gitignore",
+    "CLAUDE.md",
+    "tests/test_standalone.py"
+  ],
+  "changed_files": [
+    "pypptx.py",
+    ".gitignore",
+    "CLAUDE.md",
+    "tests/test_standalone.py"
+  ],
+  "updated_docs": [],
+  "handoff_summary": {
+    "completed": "",
+    "remaining": "",
+    "risks": "",
+    "verdict": "",
+    "findings_count": 0,
+    "requires_followup": false,
+    "changed_files": [],
+    "updated_docs": [],
+    "next_action": "",
+    "next_agent": "",
+    "block_reason": "",
+    "expected_files": [],
+    "expected_globs": [],
+    "touched_files": [],
+    "conflict_risks": "",
+    "design_decisions": "",
+    "test_coverage_notes": "",
+    "known_limitations": ""
+  },
+  "block_reason": "",
+  "conflict_risks": "Low \u2014 only pypptx.py and tests/test_standalone.py need targeted edits; no overlap expected with other beads.",
+  "branch_name": "",
+  "worktree_path": "",
+  "lease": null,
+  "retries": 0,
+  "execution_history": [
+    {
+      "timestamp": "2026-04-14T07:59:53.439756+00:00",
+      "event": "created",
+      "agent_type": "scheduler",
+      "summary": "Bead created",
+      "details": {}
+    }
+  ],
+  "metadata": {
+    "auto_corrective_for": "B-457182d7"
+  },
+  "labels": [],
+  "recovery_for": null,
+  "priority": null
+}
