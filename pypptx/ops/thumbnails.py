@@ -206,11 +206,11 @@ def assemble_grid(images: "list[PILImage.Image]", cols: int) -> "PILImage.Image"
     return grid
 
 
-def generate_thumbnails(
+def _render_slide_images(
     pptx_path: Path | str,
     temp_dir: Path | str,
 ) -> "list[PILImage.Image]":
-    """Generate thumbnail images for every slide in a PPTX file.
+    """Render every slide in a PPTX file as a PIL Image.
 
     Hidden slides (``slide.show is False``) are represented by a hatched grey
     placeholder image at the same pixel dimensions as the rendered thumbnails.
@@ -283,3 +283,61 @@ def generate_thumbnails(
         )
 
     return thumbnails
+
+
+def generate_thumbnails(
+    pptx_path: Path | str,
+    output_prefix: Path | str,
+    temp_dir: Path | str,
+    cols: int = 3,
+) -> list[Path]:
+    """Generate labeled grid thumbnail JPEG files for a PPTX presentation.
+
+    Slides are chunked into groups of at most ``cols × (cols + 1)``.  Each
+    chunk is assembled into a labeled grid via :func:`assemble_grid` and
+    written to disk as a JPEG.  When only one chunk is produced the output
+    file carries no numeric suffix; when multiple chunks are produced they are
+    suffixed ``-1``, ``-2``, …
+
+    Args:
+        pptx_path:     Path to the source .pptx file.
+        output_prefix: Output filename prefix.  The stem becomes the base
+                       name and the parent directory receives the output files
+                       (e.g. ``Path("thumbnails")`` → ``thumbnails.jpg`` in
+                       the current directory).
+        temp_dir:      Directory for intermediate conversion files (managed
+                       by the caller).
+        cols:          Number of grid columns (must be >= 1, default 3).
+
+    Returns:
+        Ordered list of :class:`~pathlib.Path` objects for every JPEG file
+        written, in chunk order.
+    """
+    output_prefix = Path(output_prefix)
+
+    slides = _render_slide_images(pptx_path, temp_dir)
+
+    chunk_size = cols * (cols + 1)
+    chunks: list[list[PILImage.Image]] = (
+        [slides[i : i + chunk_size] for i in range(0, len(slides), chunk_size)]
+        if slides
+        else [[]]
+    )
+
+    output_paths: list[Path] = []
+    out_dir = output_prefix.parent
+    base_name = output_prefix.name
+
+    if len(chunks) == 1:
+        grid = assemble_grid(chunks[0], cols)
+        out_path = out_dir / f"{base_name}.jpg"
+        grid.save(out_path, format="JPEG")
+        output_paths.append(out_path)
+    else:
+        for i, chunk in enumerate(chunks, start=1):
+            grid = assemble_grid(chunk, cols)
+            out_path = out_dir / f"{base_name}-{i}.jpg"
+            grid.save(out_path, format="JPEG")
+            output_paths.append(out_path)
+
+    return output_paths
