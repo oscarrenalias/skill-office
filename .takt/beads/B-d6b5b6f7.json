@@ -3,7 +3,7 @@
   "title": "Update and extend layout tests",
   "agent_type": "tester",
   "description": "Update existing assertions in test_slides.py and test_cli.py that check list_layouts() or the slide layouts command output. Add a new test asserting that every entry returned by list_layouts() contains a non-empty string in the name key. Add or update a CLI test asserting that --plain output includes the name alongside the filename.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-680b5593",
   "dependencies": [
@@ -203,9 +203,12 @@
   },
   "block_reason": "",
   "conflict_risks": "None \u2014 only list_layouts() was modified; no shared state with sibling beads.\nNone \u2014 only the plain formatter lambda was changed; no structural or JSON changes.",
-  "branch_name": "",
-  "worktree_path": "",
-  "lease": null,
+  "branch_name": "feature/b-680b5593",
+  "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-680b5593",
+  "lease": {
+    "owner": "tester:B-d6b5b6f7",
+    "expires_at": "2026-04-14T13:26:24.812890+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -214,9 +217,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T12:56:25.058718+00:00",
+      "event": "skills_loaded",
+      "agent_type": "tester",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/tester-validation",
+          "capability/test-execution",
+          "task/defect-bead-creation",
+          "task/regression-triage",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-14T12:56:25.058739+00:00",
+      "event": "started",
+      "agent_type": "tester",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-d6b5b6f7",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/tester-validation",
+      "capability/test-execution",
+      "task/defect-bead-creation",
+      "task/regression-triage",
+      "memory"
+    ],
+    "skill_bundle_hash": "bc009dcebd8e4c16178a90ec3060a5b91679ac7fedefcdc8f0d5a8eca4b06d22",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-d6b5b6f7/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
