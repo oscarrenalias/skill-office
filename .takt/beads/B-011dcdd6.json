@@ -77,6 +77,7 @@
   ],
   "expected_globs": [],
   "touched_files": [
+    ".apm/skills/pypptx/SKILL.md",
     ".apm/skills/pypptx/pypptx/cli.py",
     ".apm/skills/pypptx/pypptx/ops/slides.py",
     ".takt/beads/.gitkeep",
@@ -125,9 +126,12 @@
     ".takt/beads/B-f06c8351.json",
     ".takt/beads/B-f492282d.json",
     ".takt/beads/B-f8eefe9b.json",
-    ".takt/beads/B-f993e1f7.json"
+    ".takt/beads/B-f993e1f7.json",
+    "tests/test_cli.py",
+    "tests/test_slides.py"
   ],
   "changed_files": [
+    ".apm/skills/pypptx/SKILL.md",
     ".apm/skills/pypptx/pypptx/cli.py",
     ".apm/skills/pypptx/pypptx/ops/slides.py",
     ".takt/beads/.gitkeep",
@@ -176,7 +180,9 @@
     ".takt/beads/B-f06c8351.json",
     ".takt/beads/B-f492282d.json",
     ".takt/beads/B-f8eefe9b.json",
-    ".takt/beads/B-f993e1f7.json"
+    ".takt/beads/B-f993e1f7.json",
+    "tests/test_cli.py",
+    "tests/test_slides.py"
   ],
   "updated_docs": [],
   "handoff_summary": {
