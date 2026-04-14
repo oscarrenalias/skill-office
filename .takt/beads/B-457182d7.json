@@ -3,7 +3,7 @@
   "title": "Review standalone entry point implementation",
   "agent_type": "review",
   "description": "Review the complete implementation: verify pypptx.py exactly matches the spec pattern (correct _DEPS list, correct sys.prefix guard, correct venv creation and pip install invocation, correct os.execv call, correct sys.path setup, shebang present, file is executable), verify .gitignore covers .venv/, verify tests are comprehensive and pass, verify CLAUDE.md no longer references 'in development', and verify the pypptx/ package directory and pyproject.toml are completely unchanged.",
-  "status": "blocked",
+  "status": "ready",
   "bead_type": "task",
   "parent_id": "B-90115bee",
   "dependencies": [
@@ -87,7 +87,7 @@
     "test_coverage_notes": "All four required test scenarios are present (guard, version, first-run, second-run). test_first_run_creates_venv should additionally assert stderr contains the bootstrap message once print() is restored.",
     "known_limitations": "Bootstrap integration tests (TestFirstRunBootstrap) are skipped when no base Python outside the venv is found; acceptable given the @pytest.mark.skipif guard documents this clearly."
   },
-  "block_reason": "Finding 1: Missing first-run stderr print \u2014 spec and spec AC both require print('pypptx: first run, installing dependencies...', file=sys.stderr); omission violates AC 'matches the spec pattern exactly'. Finding 2: pip install runs outside the if-not-exists block, deviating from spec pattern and causing pip re-run on every cold start. Finding 3 (low): Windows path hardcoded to bin/python rather than platform-conditional.",
+  "block_reason": "",
   "conflict_risks": "Low \u2014 only pypptx.py and tests/test_standalone.py need targeted edits; no overlap expected with other beads.",
   "branch_name": "feature/b-90115bee",
   "worktree_path": "",
@@ -145,6 +145,13 @@
       "event": "corrective_planned",
       "agent_type": "review",
       "summary": "Created corrective bead B-457182d7-corrective for blocked issue",
+      "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T08:01:32.332626+00:00",
+      "event": "retried",
+      "agent_type": "review",
+      "summary": "Requeued blocked bead after corrective bead B-457182d7-corrective completed",
       "details": {}
     }
   ],
@@ -370,7 +377,9 @@
         "attempt": 1
       }
     ],
-    "auto_corrective_bead_id": "B-457182d7-corrective"
+    "auto_corrective_bead_id": "B-457182d7-corrective",
+    "last_corrective_retry_source": "B-457182d7-corrective",
+    "last_corrective_retry_commit": "505314d9e26515a33bfb84452fbcae30a5f6f47b"
   },
   "labels": [],
   "recovery_for": null,
