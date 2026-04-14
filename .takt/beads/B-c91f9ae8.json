@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-f5bbcf85",
-  "dependencies": [],
+  "dependencies": [
+    "B-0d1f2859"
+  ],
   "acceptance_criteria": [
     "Check 3 reports ERROR when left+width > slide_width minus 50000 EMU tolerance",
     "Check 3 reports ERROR when top+height > slide_height minus 50000 EMU tolerance",
