@@ -139,6 +139,13 @@
       "agent_type": "review",
       "summary": "Review found 3 deviations from the spec pattern; primary AC \"matches the spec pattern exactly\" not met.",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T07:59:53.769894+00:00",
+      "event": "corrective_planned",
+      "agent_type": "review",
+      "summary": "Created corrective bead B-457182d7-corrective for blocked issue",
+      "details": {}
     }
   ],
   "metadata": {
@@ -362,7 +369,8 @@
         "source": "provider",
         "attempt": 1
       }
-    ]
+    ],
+    "auto_corrective_bead_id": "B-457182d7-corrective"
   },
   "labels": [],
   "recovery_for": null,
