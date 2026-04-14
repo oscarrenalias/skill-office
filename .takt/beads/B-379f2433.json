@@ -3,7 +3,7 @@
   "title": "Update CLAUDE.md for standalone entry point",
   "agent_type": "documentation",
   "description": "Edit CLAUDE.md to reflect that the standalone entry point is now available. Replace the sentence 'A standalone entry point (pypptx.py at the repo root) is in development \u2014 once available, use python3 pypptx.py instead of uv run pypptx.' with concrete usage guidance showing python3 pypptx.py as the preferred invocation for environments without uv. Add python3 pypptx.py examples to the 'Running the CLI' section alongside the uv run examples.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-90115bee",
   "dependencies": [
@@ -178,9 +178,12 @@
   },
   "block_reason": "",
   "conflict_risks": "Low \u2014 only .gitignore was touched; no overlap expected with other beads.\nNone. pypptx.py is a new file with no overlap with other beads.",
-  "branch_name": "",
-  "worktree_path": "",
-  "lease": null,
+  "branch_name": "feature/b-90115bee",
+  "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-90115bee",
+  "lease": {
+    "owner": "documentation:B-379f2433",
+    "expires_at": "2026-04-14T08:25:01.762824+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -189,9 +192,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T07:55:02.247882+00:00",
+      "event": "skills_loaded",
+      "agent_type": "documentation",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/docs-agent",
+          "capability/docs-edit",
+          "task/release-notes",
+          "task/spec-sync",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-14T07:55:02.247908+00:00",
+      "event": "started",
+      "agent_type": "documentation",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-379f2433",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/docs-agent",
+      "capability/docs-edit",
+      "task/release-notes",
+      "task/spec-sync",
+      "memory"
+    ],
+    "skill_bundle_hash": "7c857dabbe34fe4a554141d698301444e918c67a8039f2ad572e46df3ff67cb3",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-379f2433/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
