@@ -8,11 +8,30 @@ from the terminal by humans.
 ## Installing the skill
 
 ```
-apm install oscarrenalias/skill-pptx
+apm install -t claude oscarrenalias/skill-pptx#v0.1.7
 ```
 
-After installation the skill is available via `python3 pypptx.py` inside the skill
-directory, or as `uv run pypptx` if the package is installed in the project environment.
+Make sure to replace `v0.1.7` with whichever is the latest version according to the [releases page](https://github.com/oscarrenalias/skill-pptx/releases). 
+
+After installation the skill is available via `/skill-pptx` inside your agent, or preferrably let the agent identify when the skill should be used according to the context.
+
+## Pre-requisites
+
+The Python code in the skill will bootstrap its own dependencies on first run (which will take longer than usual).
+
+Additionally, the `thumbnails` command requires [Pillow](https://pillow.readthedocs.io/):
+
+```
+pip install 'pypptx[thumbnails]'
+```
+
+And two system tools:
+
+| Tool | macOS | Debian/Ubuntu |
+|---|---|---|
+| LibreOffice (`soffice`) | `brew install --cask libreoffice` | `sudo apt-get install libreoffice` |
+| Poppler (`pdftoppm`) | `brew install poppler` | `sudo apt-get install poppler-utils` |
+
 
 ---
 
@@ -23,20 +42,18 @@ directory, or as `uv run pypptx` if the package is installed in the project envi
 Ask Claude Code to build a deck from a template or from nothing:
 
 ```
-Create a 6-slide project status presentation using the template in template.pptx.
+Create a 6-slide project status presentation using the template in @template.pptx.
 Slide 1 should be the cover slide with the project name and today's date.
 Slides 2–5 should cover: overview, current status, risks, and next steps.
 Slide 6 is a closing/Q&A slide.
 
-Use the pypptx skill to inspect the available layouts first, then write a
-python-pptx script to build the deck and run it.
-After generating the file, run `pypptx verify` to check for quality issues,
-then generate thumbnails so you can visually confirm the output looks correct.
+After generating the file, check the deck for quality issues, then generate thumbnails 
+so you can visually confirm the output looks correct.
 ```
 
 Claude will typically:
 1. Run `pypptx slide layouts template.pptx` to discover available layout names
-2. Write a `create_deck.py` script using python-pptx and the skill's `.venv`
+2. Write a script using python-pptx and the skill's `.venv`
 3. Run `pypptx verify output.pptx` to catch structural issues
 4. Run `pypptx thumbnails output.pptx` and read the image to visually confirm the result
 
@@ -45,12 +62,12 @@ Claude will typically:
 Ask Claude Code to make targeted edits to an existing presentation:
 
 ```
-I have a deck in quarterly_review.pptx. Please:
+I have a deck in @quarterly_review.pptx. Please:
 - Move the "Risks" slide (currently slide 5) to be slide 3
 - Delete the blank slide at position 7
 - Extract all the text so I can review what's there
 
-Use the pypptx skill. After making changes, run verify and generate thumbnails
+After making changes, run verify and generate thumbnails
 so we can confirm everything looks right.
 ```
 
@@ -65,7 +82,7 @@ Claude will typically:
 
 ## Human usage
 
-The CLI can also be called directly from the terminal.
+The CLI can also be called directly from the terminal, but it's not its main intended usage.
 
 ```bash
 uv run pypptx --help
@@ -81,33 +98,6 @@ python3 pypptx.py slide list deck.pptx
 ```
 
 `pypptx.py` creates its own `.venv` on first run — no manual setup required.
-
----
-
-## Installation (package)
-
-```
-pip install -e .
-```
-
-Or with [uv](https://github.com/astral-sh/uv):
-
-```
-uv pip install -e .
-```
-
-### Optional: thumbnails support
-
-The `thumbnails` command requires [Pillow](https://pillow.readthedocs.io/) and two system tools.
-
-```
-pip install 'pypptx[thumbnails]'
-```
-
-| Tool | macOS | Debian/Ubuntu |
-|---|---|---|
-| LibreOffice (`soffice`) | `brew install --cask libreoffice` | `sudo apt-get install libreoffice` |
-| Poppler (`pdftoppm`) | `brew install poppler` | `sudo apt-get install poppler-utils` |
 
 ---
 
