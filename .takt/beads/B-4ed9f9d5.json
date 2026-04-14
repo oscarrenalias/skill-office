@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-74563794",
-  "dependencies": [],
+  "dependencies": [
+    "B-d92e2c06"
+  ],
   "acceptance_criteria": [
     "assemble_grid() accepts a list of PIL Images and an integer cols argument",
     "Images are arranged in row-major order with no more than cols columns per row",
