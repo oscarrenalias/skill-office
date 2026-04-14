@@ -3,7 +3,7 @@
   "title": "Tests for all verify checks and CLI",
   "agent_type": "tester",
   "description": "Create tests/test_verify.py with comprehensive tests for all 5 checks and the verify CLI command. Build minimal fixture .pptx files using python-pptx directly in the tests (following the conftest.py pattern already in the project). Each of the 5 checks requires at least one positive test (triggers the check on bad input) and one negative test (clean input produces no issue). Also test --plain output format and exit codes via the Click test runner.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-f5bbcf85",
   "dependencies": [
@@ -295,7 +295,10 @@
   "conflict_risks": "",
   "branch_name": "feature/b-f5bbcf85",
   "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-f5bbcf85",
-  "lease": null,
+  "lease": {
+    "owner": "tester:B-677c8330",
+    "expires_at": "2026-04-14T19:29:41.911433+00:00"
+  },
   "retries": 1,
   "execution_history": [
     {
@@ -356,6 +359,29 @@
       "event": "retried",
       "agent_type": "tester",
       "summary": "Requeued blocked bead after transient infrastructure/auth error",
+      "details": {}
+    },
+    {
+      "timestamp": "2026-04-14T18:59:42.228496+00:00",
+      "event": "skills_loaded",
+      "agent_type": "tester",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/tester-validation",
+          "capability/test-execution",
+          "task/defect-bead-creation",
+          "task/regression-triage",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-14T18:59:42.228523+00:00",
+      "event": "started",
+      "agent_type": "tester",
+      "summary": "Worker started",
       "details": {}
     }
   ],
