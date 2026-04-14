@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-f5bbcf85",
-  "dependencies": [],
+  "dependencies": [
+    "B-966cf34d"
+  ],
   "acceptance_criteria": [
     "pypptx verify presentation.pptx command is registered under the CLI group and callable",
     "JSON output includes errors, warnings, passed, slide_count, error_count, warning_count",
