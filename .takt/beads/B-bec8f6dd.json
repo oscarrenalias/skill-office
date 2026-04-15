@@ -6,7 +6,10 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-8b50ace0",
-  "dependencies": [],
+  "dependencies": [
+    "B-2be9e5d1",
+    "B-e6cc383d"
+  ],
   "acceptance_criteria": [
     "All TestCheck2FontSize assertions check result[\"warnings\"] for font-size messages",
     "result[\"errors\"] is explicitly asserted empty for font-size-only violation cases",
