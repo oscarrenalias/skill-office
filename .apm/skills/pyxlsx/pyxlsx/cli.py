@@ -5,6 +5,7 @@ from typing import Callable
 import click
 
 import pyxlsx
+from pyxlsx.ops.inspect import info as _info, list_sheets as _list_sheets
 
 
 def output_result(data: dict, plain: bool, plain_fn: Callable[[dict], str]) -> None:
@@ -25,9 +26,53 @@ def cli(ctx: click.Context, plain: bool) -> None:
     ctx.obj["plain"] = plain
 
 
+@cli.command("info")
+@click.argument("file")
+@click.pass_context
+def info_cmd(ctx: click.Context, file: str) -> None:
+    """Show workbook-level metadata: sheet names and named ranges."""
+    plain: bool = ctx.obj["plain"]
+
+    def plain_fn(data: dict) -> str:
+        lines = [data["file"]]
+        lines.append("Sheets: " + ", ".join(data["sheets"]))
+        nr = data["named_ranges"]
+        lines.append("Named ranges: " + (", ".join(nr) if nr else "(none)"))
+        return "\n".join(lines)
+
+    try:
+        result = _info(file)
+    except SystemExit:
+        sys.exit(1)
+    output_result(result, plain, plain_fn)
+
+
 @cli.group()
 def sheet() -> None:
     """Commands for working with sheets."""
+
+
+@sheet.command("list")
+@click.argument("file")
+@click.pass_context
+def sheet_list_cmd(ctx: click.Context, file: str) -> None:
+    """List all sheets with row/column counts and visibility."""
+    plain: bool = ctx.obj["plain"]
+
+    def plain_fn(data: dict) -> str:
+        lines = []
+        for s in data["sheets"]:
+            line = f"{s['name']:<20} {s['rows']:>5} rows  {s['cols']:>3} cols"
+            if not s["visible"]:
+                line += "  [hidden]"
+            lines.append(line)
+        return "\n".join(lines)
+
+    try:
+        result = _list_sheets(file)
+    except SystemExit:
+        sys.exit(1)
+    output_result(result, plain, plain_fn)
 
 
 @cli.group()

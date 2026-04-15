@@ -17,7 +17,7 @@ dependencies = [
 pyxlsx = "pyxlsx.cli:cli"
 
 [tool.hatch.build.targets.wheel]
-packages = [".apm/skills/pyxlsx/pyxlsx"]
+packages = ["pyxlsx"]
 
 [dependency-groups]
 dev = [
