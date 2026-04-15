@@ -8,9 +8,9 @@
   "parent_id": "B-8b50ace0",
   "dependencies": [
     "B-2be9e5d1",
-    "B-e6cc383d",
+    "B-b44f4324",
     "B-bec8f6dd",
-    "B-b44f4324"
+    "B-e6cc383d"
   ],
   "acceptance_criteria": [
     "All changes are consistent with spec-ac19111d",
