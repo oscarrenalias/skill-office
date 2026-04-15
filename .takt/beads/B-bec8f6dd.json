@@ -1,0 +1,69 @@
+{
+  "bead_id": "B-bec8f6dd",
+  "title": "Update TestCheck2FontSize assertions from errors to warnings",
+  "agent_type": "tester",
+  "description": "In tests/test_verify.py, update all assertions in TestCheck2FontSize that check result[\"errors\"] for font-size violations to check result[\"warnings\"] instead. Add assertions confirming result[\"errors\"] is empty for font-size-only violation cases.",
+  "status": "ready",
+  "bead_type": "task",
+  "parent_id": "B-8b50ace0",
+  "dependencies": [
+    "B-2be9e5d1",
+    "B-e6cc383d"
+  ],
+  "acceptance_criteria": [
+    "All TestCheck2FontSize assertions check result[\"warnings\"] for font-size messages",
+    "result[\"errors\"] is explicitly asserted empty for font-size-only violation cases",
+    "uv run pytest tests/test_verify.py passes",
+    "uv run pytest (full suite) passes"
+  ],
+  "linked_docs": [],
+  "feature_root_id": "B-8b50ace0",
+  "execution_branch_name": "feature/b-8b50ace0",
+  "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-8b50ace0",
+  "expected_files": [
+    "tests/test_verify.py"
+  ],
+  "expected_globs": [],
+  "touched_files": [],
+  "changed_files": [],
+  "updated_docs": [],
+  "handoff_summary": {
+    "completed": "",
+    "remaining": "",
+    "risks": "",
+    "verdict": "",
+    "findings_count": 0,
+    "requires_followup": false,
+    "changed_files": [],
+    "updated_docs": [],
+    "next_action": "",
+    "next_agent": "",
+    "block_reason": "",
+    "expected_files": [],
+    "expected_globs": [],
+    "touched_files": [],
+    "conflict_risks": "",
+    "design_decisions": "",
+    "test_coverage_notes": "",
+    "known_limitations": ""
+  },
+  "block_reason": "",
+  "conflict_risks": "",
+  "branch_name": "",
+  "worktree_path": "",
+  "lease": null,
+  "retries": 0,
+  "execution_history": [
+    {
+      "timestamp": "2026-04-15T07:04:53.938350+00:00",
+      "event": "created",
+      "agent_type": "scheduler",
+      "summary": "Bead created",
+      "details": {}
+    }
+  ],
+  "metadata": {},
+  "labels": [],
+  "recovery_for": null,
+  "priority": null
+}

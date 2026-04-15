@@ -1,0 +1,256 @@
+{
+  "bead_id": "B-c51f728f",
+  "title": "Inspect ops: info and sheet list",
+  "agent_type": "developer",
+  "description": "Implement ops/inspect.py with info() (returns file path, list of sheet names, list of named range names) and list_sheets() (returns per-sheet name, max_row, max_column, and visibility). Wire the 'pyxlsx info' and 'pyxlsx sheet list' CLI commands in cli.py.",
+  "status": "done",
+  "bead_type": "task",
+  "parent_id": "B-4797d90b",
+  "dependencies": [
+    "B-6dc0a09b"
+  ],
+  "acceptance_criteria": [
+    "info() returns a dict with keys file, sheets (list of names), and named_ranges (list of names)",
+    "list_sheets() returns a list of dicts each with name, rows, cols, and visible",
+    "pyxlsx info <file> outputs JSON matching the spec and --plain produces the human-readable format",
+    "pyxlsx sheet list <file> outputs JSON matching the spec and --plain produces the tabular format",
+    "Errors are written to stderr and exit code is 1"
+  ],
+  "linked_docs": [
+    "specs/drafts/spec-c4e8b12f.md"
+  ],
+  "feature_root_id": "B-4797d90b",
+  "execution_branch_name": "feature/b-4797d90b",
+  "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-4797d90b",
+  "expected_files": [
+    ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+    ".apm/skills/pyxlsx/pyxlsx/cli.py"
+  ],
+  "expected_globs": [],
+  "touched_files": [
+    ".apm/skills/pyxlsx/pyproject.toml",
+    ".apm/skills/pyxlsx/pyxlsx/cli.py",
+    ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+    ".apm/skills/pyxlsx/uv.lock",
+    "uv.lock"
+  ],
+  "changed_files": [
+    ".apm/skills/pyxlsx/pyproject.toml",
+    ".apm/skills/pyxlsx/pyxlsx/cli.py",
+    ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+    ".apm/skills/pyxlsx/uv.lock",
+    "uv.lock"
+  ],
+  "updated_docs": [],
+  "handoff_summary": {
+    "completed": "info() returns {file, sheets, named_ranges} using openpyxl 3.1 DefinedNameDict API. list_sheets() returns {sheets: [{name, rows, cols, visible}]}. Both CLI commands work with JSON (default) and --plain output. Exit code 1 on errors via sys.exit(1). Fixed pyproject.toml packages path from \".apm/skills/pyxlsx/pyxlsx\" to \"pyxlsx\" (required for the package to be installable from its own directory).",
+    "remaining": "Tests for inspect ops are the tester agent's responsibility (test_xlsx_inspect.py and test_xlsx_cli.py). Downstream beads cover the remaining commands: sheet read, table read, cell get, cell set, sheet add/delete/rename, unpack/pack.",
+    "risks": "The pyproject.toml fix changes scope slightly beyond this bead's two expected files \u2014 however it was a blocking bug (package not importable) and is within the same skill directory.",
+    "verdict": "approved",
+    "findings_count": 1,
+    "requires_followup": false,
+    "changed_files": [
+      ".apm/skills/pyxlsx/pyproject.toml",
+      ".apm/skills/pyxlsx/pyxlsx/cli.py",
+      ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+      ".apm/skills/pyxlsx/uv.lock",
+      "uv.lock"
+    ],
+    "updated_docs": [],
+    "next_action": "Tester agent should run test_xlsx_inspect.py and test_xlsx_cli.py against pyxlsx info and sheet list commands.",
+    "next_agent": "tester",
+    "block_reason": "",
+    "expected_files": [
+      ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+      ".apm/skills/pyxlsx/pyxlsx/cli.py"
+    ],
+    "expected_globs": [],
+    "touched_files": [
+      ".apm/skills/pyxlsx/pyproject.toml",
+      ".apm/skills/pyxlsx/pyxlsx/cli.py",
+      ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+      ".apm/skills/pyxlsx/uv.lock",
+      "uv.lock"
+    ],
+    "conflict_risks": "cli.py has two downstream beads adding more commands (sheet read, table read, cell get/set, etc.). Conflicts likely at the end of the file where new command groups/commands are appended. Keep the existing group stubs (sheet, table, cell) in place.",
+    "design_decisions": "Used openpyxl 3.1 DefinedNameDict iteration (list(wb.defined_names)) rather than the legacy .definedName attribute list. Used read_only=True, data_only=True for both ops since they are pure read operations. Errors call sys.exit(1) after printing to stderr \u2014 callers catching SystemExit will see exit code 1.",
+    "test_coverage_notes": "Smoke-tested manually: info() and list_sheets() both return correct dicts; CLI commands produce correct JSON and --plain output; hidden sheet visibility flag works; named ranges round-trip correctly.",
+    "known_limitations": "openpyxl list(wb.defined_names) returns workbook-scope defined names only; sheet-scoped names are not included. This matches the spec wording ('named range names defined in the workbook') and the example output."
+  },
+  "block_reason": "",
+  "conflict_risks": "cli.py has two downstream beads adding more commands (sheet read, table read, cell get/set, etc.). Conflicts likely at the end of the file where new command groups/commands are appended. Keep the existing group stubs (sheet, table, cell) in place.",
+  "branch_name": "feature/b-4797d90b",
+  "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-4797d90b",
+  "lease": null,
+  "retries": 0,
+  "execution_history": [
+    {
+      "timestamp": "2026-04-15T06:48:40.980915+00:00",
+      "event": "created",
+      "agent_type": "scheduler",
+      "summary": "Bead created",
+      "details": {}
+    },
+    {
+      "timestamp": "2026-04-15T06:52:04.218404+00:00",
+      "event": "skills_loaded",
+      "agent_type": "developer",
+      "summary": "Loaded 7 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/developer-implementation",
+          "capability/code-edit",
+          "task/corrective-implementation",
+          "task/refactor-safe",
+          "task/migration",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-15T06:52:04.218427+00:00",
+      "event": "started",
+      "agent_type": "developer",
+      "summary": "Worker started",
+      "details": {}
+    },
+    {
+      "timestamp": "2026-04-15T06:52:05.174189+00:00",
+      "event": "guardrails_applied",
+      "agent_type": "developer",
+      "summary": "Applied guardrails from .takt/agent-runs/B-c51f728f/repo/templates/agents/developer.md",
+      "details": {
+        "template_path": ".takt/agent-runs/B-c51f728f/repo/templates/agents/developer.md"
+      }
+    },
+    {
+      "timestamp": "2026-04-15T06:55:04.218043+00:00",
+      "event": "completed",
+      "agent_type": "developer",
+      "summary": "Implemented ops/inspect.py with info() and list_sheets(), wired pyxlsx info and pyxlsx sheet list CLI commands in cli.py, and fixed a pyproject.toml packages path bug from the scaffold bead that prevented the package from being importable.",
+      "details": {}
+    }
+  ],
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-c51f728f",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/developer-implementation",
+      "capability/code-edit",
+      "task/corrective-implementation",
+      "task/refactor-safe",
+      "task/migration",
+      "memory"
+    ],
+    "skill_bundle_hash": "2cbacb3ae07c8eee2a6bb3d65b99b3e4df7fa47ac8b10c5c68be4b338a583348",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-c51f728f/home",
+    "runner_backend": "claude",
+    "guardrails": {
+      "agent_type": "developer",
+      "template_path": ".takt/agent-runs/B-c51f728f/repo/templates/agents/developer.md",
+      "template_text": "# Developer Guardrails\n\nPrimary responsibility: Implement only the assigned bead inside the existing architecture and file scope.\n\nAllowed actions:\n- Modify code, configuration, or local docs required to complete the assigned bead.\n- Create sub-beads for discovered follow-up work that should be handled separately.\n- Verify your `Python` changes compile and import correctly with a quick syntax check: `python -m py_compile`.\n\nDisallowed actions:\n- Run any test suite \u2014 not even a targeted `pytest` run or any subset. Test execution is exclusively the tester agent's responsibility. Running tests wastes the agent budget and delays the pipeline.\n- Redesign unrelated architecture or broaden scope beyond the assigned bead.\n- Perform final review signoff in place of a review agent.\n- Silently absorb unrelated test, documentation, or planning work that should be handed off.\n\nExpected outputs:\n- Completed or blocked JSON with concise implementation summary.\n- Accurate touched files, changed files, risks, and follow-up handoff fields.",
+      "captured_at": "2026-04-15T06:52:05.174174+00:00"
+    },
+    "worker_prompt_context": {
+      "bead_id": "B-c51f728f",
+      "feature_root_id": "B-4797d90b",
+      "title": "Inspect ops: info and sheet list",
+      "agent_type": "developer",
+      "description": "Implement ops/inspect.py with info() (returns file path, list of sheet names, list of named range names) and list_sheets() (returns per-sheet name, max_row, max_column, and visibility). Wire the 'pyxlsx info' and 'pyxlsx sheet list' CLI commands in cli.py.",
+      "status": "in_progress",
+      "acceptance_criteria": [
+        "info() returns a dict with keys file, sheets (list of names), and named_ranges (list of names)",
+        "list_sheets() returns a list of dicts each with name, rows, cols, and visible",
+        "pyxlsx info <file> outputs JSON matching the spec and --plain produces the human-readable format",
+        "pyxlsx sheet list <file> outputs JSON matching the spec and --plain produces the tabular format",
+        "Errors are written to stderr and exit code is 1"
+      ],
+      "dependencies": [
+        "B-6dc0a09b"
+      ],
+      "linked_docs": [
+        "specs/drafts/spec-c4e8b12f.md"
+      ],
+      "execution_branch_name": "feature/b-4797d90b",
+      "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-4797d90b",
+      "expected_files": [
+        ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+        ".apm/skills/pyxlsx/pyxlsx/cli.py"
+      ],
+      "expected_globs": [],
+      "touched_files": [],
+      "conflict_risks": "",
+      "handoff_summary": {
+        "completed": "",
+        "remaining": "",
+        "risks": "",
+        "verdict": "",
+        "findings_count": 0,
+        "requires_followup": false,
+        "changed_files": [],
+        "updated_docs": [],
+        "next_action": "",
+        "next_agent": "",
+        "block_reason": "",
+        "expected_files": [],
+        "expected_globs": [],
+        "touched_files": [],
+        "conflict_risks": "",
+        "design_decisions": "",
+        "test_coverage_notes": "",
+        "known_limitations": ""
+      }
+    },
+    "last_agent_result": {
+      "outcome": "completed",
+      "summary": "Implemented ops/inspect.py with info() and list_sheets(), wired pyxlsx info and pyxlsx sheet list CLI commands in cli.py, and fixed a pyproject.toml packages path bug from the scaffold bead that prevented the package from being importable.",
+      "verdict": "approved",
+      "findings_count": 1,
+      "requires_followup": false,
+      "next_agent": "tester",
+      "block_reason": ""
+    },
+    "telemetry": {
+      "cost_usd": 0.5198953,
+      "duration_ms": 178018,
+      "duration_api_ms": 159228,
+      "num_turns": 32,
+      "input_tokens": 28,
+      "output_tokens": 10325,
+      "cache_creation_tokens": 29066,
+      "cache_read_tokens": 845966,
+      "stop_reason": "end_turn",
+      "session_id": "b45b5a54-934a-4117-a37b-c2b20329ebb6",
+      "permission_denials": [],
+      "prompt_chars": 5859,
+      "prompt_lines": 135,
+      "source": "provider",
+      "attempt": 1
+    },
+    "telemetry_history": [
+      {
+        "cost_usd": 0.5198953,
+        "duration_ms": 178018,
+        "duration_api_ms": 159228,
+        "num_turns": 32,
+        "input_tokens": 28,
+        "output_tokens": 10325,
+        "cache_creation_tokens": 29066,
+        "cache_read_tokens": 845966,
+        "stop_reason": "end_turn",
+        "session_id": "b45b5a54-934a-4117-a37b-c2b20329ebb6",
+        "permission_denials": [],
+        "prompt_chars": 5859,
+        "prompt_lines": 135,
+        "source": "provider",
+        "attempt": 1
+      }
+    ],
+    "last_commit": "e9322d4f4ad5794fc6cb2770c45e2f8e07c6dfcf"
+  },
+  "labels": [],
+  "recovery_for": null,
+  "priority": null
+}
