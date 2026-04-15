@@ -6,7 +6,9 @@
   "status": "ready",
   "bead_type": "task",
   "parent_id": "B-4797d90b",
-  "dependencies": [],
+  "dependencies": [
+    "B-76c52394"
+  ],
   "acceptance_criteria": [
     "set_cell() writes the inferred type to the specified cell and saves atomically",
     "Values starting with '=' are stored as formula strings",
