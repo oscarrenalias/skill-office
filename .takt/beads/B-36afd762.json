@@ -3,7 +3,7 @@
   "title": "Shared tester",
   "agent_type": "tester",
   "description": "Write all four test files covering the complete command surface. test_xlsx_inspect.py covers info(), list_sheets(), read_sheet() (with and without --range), read_table() (including duplicate headers), and get_cell(). test_xlsx_write.py covers set_cell() type inference, add_sheet()/delete_sheet()/rename_sheet() including all error paths. test_xlsx_pack.py covers unpack/pack round-trips. test_xlsx_cli.py covers every CLI command via CliRunner including --plain output, stderr errors, and exit code 1 on failure.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-4797d90b",
   "dependencies": [
@@ -319,9 +319,12 @@
   },
   "block_reason": "",
   "conflict_risks": "pyproject.toml declares packages = [\".apm/skills/pyxlsx/pyxlsx\"]. Any bead that modifies pyproject.toml must preserve this path. No other files in this bead conflict with sibling beads.\nSibling beads that also modify pyproject.toml dev deps may conflict on that block. The conftest.py change is additive and should not conflict with existing pptx fixtures.\nNone \u2014 only new file added.\nNo conflicts expected. This file was new; no other bead claims cli.py.\ncli.py has two downstream beads adding more commands (sheet read, table read, cell get/set, etc.). Conflicts likely at the end of the file where new command groups/commands are appended. Keep the existing group stubs (sheet, table, cell) in place.\nNo sibling beads touch these files. Clean merge expected.\nNo sibling beads overlap inspect.py or cli.py per the dependency graph; no conflict risk identified.\nNo conflicts expected. write.py is a new file with no overlap. cli.py additions are append-only to the cell group with no edits to existing commands.\nNo overlapping file edits with sibling beads expected; write.py and cli.py are owned solely by this bead within the feature tree.\nNo conflicts expected. pack.py is a new file. cli.py edits are append-only (new import + two new commands at the end of file) so they will merge cleanly with any sibling bead changes to the top of the file.",
-  "branch_name": "",
-  "worktree_path": "",
-  "lease": null,
+  "branch_name": "feature/b-4797d90b",
+  "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-4797d90b",
+  "lease": {
+    "owner": "tester:B-36afd762",
+    "expires_at": "2026-04-15T07:35:04.336542+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -330,9 +333,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-15T07:05:04.554761+00:00",
+      "event": "skills_loaded",
+      "agent_type": "tester",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/tester-validation",
+          "capability/test-execution",
+          "task/defect-bead-creation",
+          "task/regression-triage",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-15T07:05:04.554792+00:00",
+      "event": "started",
+      "agent_type": "tester",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-36afd762",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/tester-validation",
+      "capability/test-execution",
+      "task/defect-bead-creation",
+      "task/regression-triage",
+      "memory"
+    ],
+    "skill_bundle_hash": "bc009dcebd8e4c16178a90ec3060a5b91679ac7fedefcdc8f0d5a8eca4b06d22",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-36afd762/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
