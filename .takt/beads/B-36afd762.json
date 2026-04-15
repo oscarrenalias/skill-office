@@ -36,7 +36,9 @@
   "expected_files": [
     ".apm/skills/pyxlsx/apm.yml",
     ".apm/skills/pyxlsx/pyproject.toml",
+    ".apm/skills/pyxlsx/pyxlsx.py",
     ".apm/skills/pyxlsx/pyxlsx/__init__.py",
+    ".apm/skills/pyxlsx/pyxlsx/cli.py",
     ".apm/skills/pyxlsx/pyxlsx/ops/__init__.py",
     ".takt/beads/.gitkeep",
     ".takt/beads/B-011dcdd6.json",
@@ -109,6 +111,8 @@
     ".takt/beads/B-f8eefe9b.json",
     ".takt/beads/B-f993e1f7.json",
     ".takt/beads/B-fd15edb9.json",
+    "pyproject.toml",
+    "tests/conftest.py",
     "tests/test_xlsx_cli.py",
     "tests/test_xlsx_inspect.py",
     "tests/test_xlsx_pack.py",
@@ -118,7 +122,9 @@
   "touched_files": [
     ".apm/skills/pyxlsx/apm.yml",
     ".apm/skills/pyxlsx/pyproject.toml",
+    ".apm/skills/pyxlsx/pyxlsx.py",
     ".apm/skills/pyxlsx/pyxlsx/__init__.py",
+    ".apm/skills/pyxlsx/pyxlsx/cli.py",
     ".apm/skills/pyxlsx/pyxlsx/ops/__init__.py",
     ".takt/beads/.gitkeep",
     ".takt/beads/B-011dcdd6.json",
@@ -190,12 +196,16 @@
     ".takt/beads/B-f5bbcf85.json",
     ".takt/beads/B-f8eefe9b.json",
     ".takt/beads/B-f993e1f7.json",
-    ".takt/beads/B-fd15edb9.json"
+    ".takt/beads/B-fd15edb9.json",
+    "pyproject.toml",
+    "tests/conftest.py"
   ],
   "changed_files": [
     ".apm/skills/pyxlsx/apm.yml",
     ".apm/skills/pyxlsx/pyproject.toml",
+    ".apm/skills/pyxlsx/pyxlsx.py",
     ".apm/skills/pyxlsx/pyxlsx/__init__.py",
+    ".apm/skills/pyxlsx/pyxlsx/cli.py",
     ".apm/skills/pyxlsx/pyxlsx/ops/__init__.py",
     ".takt/beads/.gitkeep",
     ".takt/beads/B-011dcdd6.json",
@@ -267,7 +277,9 @@
     ".takt/beads/B-f5bbcf85.json",
     ".takt/beads/B-f8eefe9b.json",
     ".takt/beads/B-f993e1f7.json",
-    ".takt/beads/B-fd15edb9.json"
+    ".takt/beads/B-fd15edb9.json",
+    "pyproject.toml",
+    "tests/conftest.py"
   ],
   "updated_docs": [],
   "handoff_summary": {
@@ -291,7 +303,7 @@
     "known_limitations": ""
   },
   "block_reason": "",
-  "conflict_risks": "pyproject.toml declares packages = [\".apm/skills/pyxlsx/pyxlsx\"]. Any bead that modifies pyproject.toml must preserve this path. No other files in this bead conflict with sibling beads.",
+  "conflict_risks": "pyproject.toml declares packages = [\".apm/skills/pyxlsx/pyxlsx\"]. Any bead that modifies pyproject.toml must preserve this path. No other files in this bead conflict with sibling beads.\nSibling beads that also modify pyproject.toml dev deps may conflict on that block. The conftest.py change is additive and should not conflict with existing pptx fixtures.",
   "branch_name": "",
   "worktree_path": "",
   "lease": null,
