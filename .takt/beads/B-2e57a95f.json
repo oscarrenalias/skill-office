@@ -3,7 +3,7 @@
   "title": "Shared review",
   "agent_type": "review",
   "description": "Review the complete pyxlsx implementation against the spec. Verify: output contract adherence (JSON stdout, errors to stderr, exit code 1 on failure), defusedxml used for all XML parsing with no xml.etree.ElementTree parsing calls, atomic writes in all write ops, type inference correctness in set_cell(), ISO-8601 datetime serialisation, duplicate header suffix logic in read_table(), test coverage of all specified error paths, and zero cross-imports or shared code with pypptx.",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-4797d90b",
   "dependencies": [
@@ -329,9 +329,12 @@
   },
   "block_reason": "",
   "conflict_risks": "pyproject.toml declares packages = [\".apm/skills/pyxlsx/pyxlsx\"]. Any bead that modifies pyproject.toml must preserve this path. No other files in this bead conflict with sibling beads.\nSibling beads that also modify pyproject.toml dev deps may conflict on that block. The conftest.py change is additive and should not conflict with existing pptx fixtures.\nNo conflicts expected. This file was new; no other bead claims cli.py.\ncli.py has two downstream beads adding more commands (sheet read, table read, cell get/set, etc.). Conflicts likely at the end of the file where new command groups/commands are appended. Keep the existing group stubs (sheet, table, cell) in place.\nNo sibling beads touch these files. Clean merge expected.\nNo sibling beads overlap inspect.py or cli.py per the dependency graph; no conflict risk identified.\nNo conflicts expected. write.py is a new file with no overlap. cli.py additions are append-only to the cell group with no edits to existing commands.\nNo overlapping file edits with sibling beads expected; write.py and cli.py are owned solely by this bead within the feature tree.\nNo conflicts expected. pack.py is a new file. cli.py edits are append-only (new import + two new commands at the end of file) so they will merge cleanly with any sibling bead changes to the top of the file.",
-  "branch_name": "",
+  "branch_name": "feature/b-4797d90b",
   "worktree_path": "",
-  "lease": null,
+  "lease": {
+    "owner": "review:B-2e57a95f",
+    "expires_at": "2026-04-15T07:46:55.471331+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -340,9 +343,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-15T07:16:55.798857+00:00",
+      "event": "skills_loaded",
+      "agent_type": "review",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/reviewer-signoff",
+          "capability/code-review",
+          "task/corrective-bead-creation",
+          "task/risk-assessment",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-15T07:16:55.798879+00:00",
+      "event": "started",
+      "agent_type": "review",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-2e57a95f",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/reviewer-signoff",
+      "capability/code-review",
+      "task/corrective-bead-creation",
+      "task/risk-assessment",
+      "memory"
+    ],
+    "skill_bundle_hash": "e49ae02cdd641b1b539810ca3dc9f7cb45c7fa56ae2c7f96d6d53ebce3109bd4",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-2e57a95f/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
