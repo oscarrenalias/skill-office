@@ -179,12 +179,105 @@ palette.
 text frames over adding raw text boxes; placeholders inherit master styles.
 
 **Spacing** — use `Inches()` and `Pt()` from `pptx.util` for all measurements.
-Leave slide margins of at least 0.5 in on all sides.
+Leave slide margins of at least 0.3–0.5 in on all edges. Never place shapes
+flush to the slide boundary.
 
-**Common mistakes to avoid**
-- Adding a text box when a placeholder would do — breaks theme inheritance
-- Hard-coding RGB colors not present in the deck's theme
-- Forgetting to call `prs.save()` at the end of a creation script
+---
+
+### Best practices and common mistakes
+
+#### Text inside shapes
+
+**Do** write text directly into a shape's text frame and control margins there:
+
+```python
+tf = shape.text_frame
+tf.word_wrap = True
+tf.margin_left   = Inches(0.1)
+tf.margin_right  = Inches(0.1)
+tf.margin_top    = Inches(0.05)
+tf.margin_bottom = Inches(0.05)
+tf.text = "My label"
+```
+
+**Don't** add a separate `add_textbox()` on top of an existing shape to place
+text — it creates an invisible stacked box with wrong font, wrong colour, and
+no connection to the shape below.
+
+#### Placeholders vs. free shapes
+
+**Do** use `slide.placeholders[idx]` for title and body content — they inherit
+the master font, colour, and position. Inspect what a layout offers before
+writing:
+
+```python
+for ph in slide.placeholders:
+    print(ph.placeholder_format.idx, ph.name)
+```
+
+**Don't** delete placeholders and replace them with textboxes. `add_textbox()`
+is only appropriate on fully blank slides (layout "Blank") where no
+placeholders exist.
+
+#### Slide dimensions
+
+**Do** read actual slide dimensions before placing any shape:
+
+```python
+W = prs.slide_width   # e.g. 9144000 EMU for a 10-inch-wide slide
+H = prs.slide_height
+```
+
+**Don't** hardcode `Inches(10)` / `Inches(7.5)` — template slides vary.
+Always derive positions and sizes from `prs.slide_width` / `prs.slide_height`.
+
+#### Tables
+
+**Do** use `shapes.add_table(rows, cols, left, top, width, height)` for
+tabular data, then set column widths explicitly so they sum to the table width:
+
+```python
+tbl = slide.shapes.add_table(4, 3, left, top, width, height).table
+tbl.columns[0].width = Inches(3)
+tbl.columns[1].width = Inches(2)
+tbl.columns[2].width = Inches(2)
+```
+
+**Don't** simulate tables with individually positioned text boxes — alignment
+breaks as soon as content changes length.
+
+#### Colors
+
+**Do** extract and reuse theme colors from the deck's `ppt/theme/theme1.xml`.
+**Don't** invent hex values not present in the palette — they clash with the
+master and look unprofessional.
+
+#### Layout index
+
+**Do** always run `slide layouts` before choosing a layout index — assignments
+vary between templates:
+
+```bash
+python3 pypptx.py slide layouts presentation.pptx
+```
+
+**Don't** assume index 0 = blank, index 1 = "Title and Content". Index 1 is
+almost always the cover ("Title Slide") in branded templates.
+
+#### After editing
+
+**Do** always run `verify` and `thumbnails` before declaring a file done:
+
+```bash
+python3 pypptx.py verify output.pptx
+python3 pypptx.py thumbnails output.pptx
+```
+
+Read the generated thumbnail image to catch layout issues invisible in code:
+overlapping shapes, text clipping, white-on-white text, wrong layout on slide 1.
+
+**Don't** skip the visual check — `verify` catches structural issues but cannot
+see rendering artefacts.
 
 ---
 
