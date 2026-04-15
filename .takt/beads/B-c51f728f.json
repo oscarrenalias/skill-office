@@ -90,6 +90,15 @@
       "agent_type": "developer",
       "summary": "Worker started",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-15T06:52:05.174189+00:00",
+      "event": "guardrails_applied",
+      "agent_type": "developer",
+      "summary": "Applied guardrails from .takt/agent-runs/B-c51f728f/repo/templates/agents/developer.md",
+      "details": {
+        "template_path": ".takt/agent-runs/B-c51f728f/repo/templates/agents/developer.md"
+      }
     }
   ],
   "metadata": {
@@ -106,7 +115,63 @@
     ],
     "skill_bundle_hash": "2cbacb3ae07c8eee2a6bb3d65b99b3e4df7fa47ac8b10c5c68be4b338a583348",
     "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-c51f728f/home",
-    "runner_backend": "claude"
+    "runner_backend": "claude",
+    "guardrails": {
+      "agent_type": "developer",
+      "template_path": ".takt/agent-runs/B-c51f728f/repo/templates/agents/developer.md",
+      "template_text": "# Developer Guardrails\n\nPrimary responsibility: Implement only the assigned bead inside the existing architecture and file scope.\n\nAllowed actions:\n- Modify code, configuration, or local docs required to complete the assigned bead.\n- Create sub-beads for discovered follow-up work that should be handled separately.\n- Verify your `Python` changes compile and import correctly with a quick syntax check: `python -m py_compile`.\n\nDisallowed actions:\n- Run any test suite \u2014 not even a targeted `pytest` run or any subset. Test execution is exclusively the tester agent's responsibility. Running tests wastes the agent budget and delays the pipeline.\n- Redesign unrelated architecture or broaden scope beyond the assigned bead.\n- Perform final review signoff in place of a review agent.\n- Silently absorb unrelated test, documentation, or planning work that should be handed off.\n\nExpected outputs:\n- Completed or blocked JSON with concise implementation summary.\n- Accurate touched files, changed files, risks, and follow-up handoff fields.",
+      "captured_at": "2026-04-15T06:52:05.174174+00:00"
+    },
+    "worker_prompt_context": {
+      "bead_id": "B-c51f728f",
+      "feature_root_id": "B-4797d90b",
+      "title": "Inspect ops: info and sheet list",
+      "agent_type": "developer",
+      "description": "Implement ops/inspect.py with info() (returns file path, list of sheet names, list of named range names) and list_sheets() (returns per-sheet name, max_row, max_column, and visibility). Wire the 'pyxlsx info' and 'pyxlsx sheet list' CLI commands in cli.py.",
+      "status": "in_progress",
+      "acceptance_criteria": [
+        "info() returns a dict with keys file, sheets (list of names), and named_ranges (list of names)",
+        "list_sheets() returns a list of dicts each with name, rows, cols, and visible",
+        "pyxlsx info <file> outputs JSON matching the spec and --plain produces the human-readable format",
+        "pyxlsx sheet list <file> outputs JSON matching the spec and --plain produces the tabular format",
+        "Errors are written to stderr and exit code is 1"
+      ],
+      "dependencies": [
+        "B-6dc0a09b"
+      ],
+      "linked_docs": [
+        "specs/drafts/spec-c4e8b12f.md"
+      ],
+      "execution_branch_name": "feature/b-4797d90b",
+      "execution_worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-4797d90b",
+      "expected_files": [
+        ".apm/skills/pyxlsx/pyxlsx/ops/inspect.py",
+        ".apm/skills/pyxlsx/pyxlsx/cli.py"
+      ],
+      "expected_globs": [],
+      "touched_files": [],
+      "conflict_risks": "",
+      "handoff_summary": {
+        "completed": "",
+        "remaining": "",
+        "risks": "",
+        "verdict": "",
+        "findings_count": 0,
+        "requires_followup": false,
+        "changed_files": [],
+        "updated_docs": [],
+        "next_action": "",
+        "next_agent": "",
+        "block_reason": "",
+        "expected_files": [],
+        "expected_globs": [],
+        "touched_files": [],
+        "conflict_risks": "",
+        "design_decisions": "",
+        "test_coverage_notes": "",
+        "known_limitations": ""
+      }
+    }
   },
   "labels": [],
   "recovery_for": null,
