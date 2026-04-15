@@ -12,6 +12,7 @@ from pyxlsx.ops.inspect import (
     read_sheet as _read_sheet,
     read_table as _read_table,
 )
+from pyxlsx.ops.write import set_cell as _set_cell
 
 
 def output_result(data: dict, plain: bool, plain_fn: Callable[[dict], str]) -> None:
@@ -195,6 +196,26 @@ def cell_get_cmd(ctx: click.Context, file: str, sheet: str, cell: str) -> None:
 
     try:
         result = _get_cell(file, sheet, cell)
+    except SystemExit:
+        sys.exit(1)
+    output_result(result, plain, plain_fn)
+
+
+@cell.command("set")
+@click.argument("file")
+@click.argument("sheet")
+@click.argument("cell")
+@click.argument("value")
+@click.pass_context
+def cell_set_cmd(ctx: click.Context, file: str, sheet: str, cell: str, value: str) -> None:
+    """Set the value of a single A1-addressed cell (type-inferred)."""
+    plain: bool = ctx.obj["plain"]
+
+    def plain_fn(data: dict) -> str:
+        return f"set {data['sheet']}!{data['cell']} = {data['value']}"
+
+    try:
+        result = _set_cell(file, sheet, cell, value)
     except SystemExit:
         sys.exit(1)
     output_result(result, plain, plain_fn)
