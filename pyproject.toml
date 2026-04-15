@@ -22,7 +22,7 @@ thumbnails = [
 pypptx = "pypptx.cli:cli"
 
 [tool.hatch.build.targets.wheel]
-packages = [".apm/skills/pypptx/pypptx"]
+packages = [".apm/skills/pypptx/pypptx", ".apm/skills/pyxlsx/pyxlsx"]
 
 [dependency-groups]
 dev = [
