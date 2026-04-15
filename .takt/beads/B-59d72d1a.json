@@ -3,7 +3,7 @@
   "title": "Shared documentation",
   "agent_type": "documentation",
   "description": "Write SKILL.md at .apm/skills/pyxlsx/SKILL.md. Content must cover: quick command reference with example invocations and JSON output for all 11 commands, the output contract (JSON default, --plain, errors to stderr, exit codes), the formula evaluation caveat (open in Excel/LibreOffice before relying on cached values), ready-made openpyxl script patterns for table creation and bulk writes, and a cross-skill agent workflow example (extract from xlsx with table read, process, write to pptx via pypptx).",
-  "status": "ready",
+  "status": "in_progress",
   "bead_type": "task",
   "parent_id": "B-4797d90b",
   "dependencies": [
@@ -315,9 +315,12 @@
   },
   "block_reason": "",
   "conflict_risks": "pyproject.toml declares packages = [\".apm/skills/pyxlsx/pyxlsx\"]. Any bead that modifies pyproject.toml must preserve this path. No other files in this bead conflict with sibling beads.\nSibling beads that also modify pyproject.toml dev deps may conflict on that block. The conftest.py change is additive and should not conflict with existing pptx fixtures.\nNo conflicts expected. This file was new; no other bead claims cli.py.\ncli.py has two downstream beads adding more commands (sheet read, table read, cell get/set, etc.). Conflicts likely at the end of the file where new command groups/commands are appended. Keep the existing group stubs (sheet, table, cell) in place.\nNo sibling beads touch these files. Clean merge expected.\nNo sibling beads overlap inspect.py or cli.py per the dependency graph; no conflict risk identified.\nNo conflicts expected. write.py is a new file with no overlap. cli.py additions are append-only to the cell group with no edits to existing commands.\nNo overlapping file edits with sibling beads expected; write.py and cli.py are owned solely by this bead within the feature tree.\nNo conflicts expected. pack.py is a new file. cli.py edits are append-only (new import + two new commands at the end of file) so they will merge cleanly with any sibling bead changes to the top of the file.",
-  "branch_name": "",
-  "worktree_path": "",
-  "lease": null,
+  "branch_name": "feature/b-4797d90b",
+  "worktree_path": "/Users/oscar.renalias/Projects/skill-pptx/.takt/worktrees/B-4797d90b",
+  "lease": {
+    "owner": "documentation:B-59d72d1a",
+    "expires_at": "2026-04-15T07:44:55.580403+00:00"
+  },
   "retries": 0,
   "execution_history": [
     {
@@ -326,9 +329,46 @@
       "agent_type": "scheduler",
       "summary": "Bead created",
       "details": {}
+    },
+    {
+      "timestamp": "2026-04-15T07:14:55.925995+00:00",
+      "event": "skills_loaded",
+      "agent_type": "documentation",
+      "summary": "Loaded 6 skill(s) for isolated execution",
+      "details": {
+        "loaded_skills": [
+          "core/base-orchestrator",
+          "role/docs-agent",
+          "capability/docs-edit",
+          "task/release-notes",
+          "task/spec-sync",
+          "memory"
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-04-15T07:14:55.926017+00:00",
+      "event": "started",
+      "agent_type": "documentation",
+      "summary": "Worker started",
+      "details": {}
     }
   ],
-  "metadata": {},
+  "metadata": {
+    "execution_root": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-59d72d1a",
+    "workspace_repo_path": "repo",
+    "loaded_skills": [
+      "core/base-orchestrator",
+      "role/docs-agent",
+      "capability/docs-edit",
+      "task/release-notes",
+      "task/spec-sync",
+      "memory"
+    ],
+    "skill_bundle_hash": "7c857dabbe34fe4a554141d698301444e918c67a8039f2ad572e46df3ff67cb3",
+    "isolated_home": "/Users/oscar.renalias/Projects/skill-pptx/.takt/agent-runs/B-59d72d1a/home",
+    "runner_backend": "claude"
+  },
   "labels": [],
   "recovery_for": null,
   "priority": null
