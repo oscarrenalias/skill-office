@@ -5,7 +5,13 @@ from typing import Callable
 import click
 
 import pyxlsx
-from pyxlsx.ops.inspect import info as _info, list_sheets as _list_sheets, read_sheet as _read_sheet
+from pyxlsx.ops.inspect import (
+    get_cell as _get_cell,
+    info as _info,
+    list_sheets as _list_sheets,
+    read_sheet as _read_sheet,
+    read_table as _read_table,
+)
 
 
 def output_result(data: dict, plain: bool, plain_fn: Callable[[dict], str]) -> None:
@@ -120,6 +126,75 @@ def table() -> None:
     """Commands for working with tables."""
 
 
+@table.command("read")
+@click.argument("file")
+@click.argument("sheet")
+@click.option(
+    "--header-row",
+    "header_row",
+    default=1,
+    show_default=True,
+    type=int,
+    help="1-based row number to use as the header.",
+)
+@click.option("--range", "range_str", default=None, help="Cell range in A1:H50 notation.")
+@click.pass_context
+def table_read_cmd(
+    ctx: click.Context, file: str, sheet: str, header_row: int, range_str: str | None
+) -> None:
+    """Read a sheet as an array-of-objects keyed by the header row."""
+    plain: bool = ctx.obj["plain"]
+
+    def plain_fn(data: dict) -> str:
+        headers = data.get("headers", [])
+        rows = data.get("rows", [])
+        if not rows and not headers:
+            return ""
+        # Compute column widths from headers and values
+        widths = {h: len(h) for h in headers}
+        for row in rows:
+            for h in headers:
+                v = row.get(h)
+                widths[h] = max(widths[h], len(str(v) if v is not None else ""))
+        # Header line
+        header_line = "  ".join(h.ljust(widths[h]) for h in headers).rstrip()
+        sep_line = "  ".join("-" * widths[h] for h in headers).rstrip()
+        lines = [header_line, sep_line]
+        for row in rows:
+            parts = []
+            for h in headers:
+                v = row.get(h)
+                parts.append((str(v) if v is not None else "").ljust(widths[h]))
+            lines.append("  ".join(parts).rstrip())
+        return "\n".join(lines)
+
+    try:
+        result = _read_table(file, sheet, header_row, range_str)
+    except SystemExit:
+        sys.exit(1)
+    output_result(result, plain, plain_fn)
+
+
 @cli.group()
 def cell() -> None:
     """Commands for working with cells."""
+
+
+@cell.command("get")
+@click.argument("file")
+@click.argument("sheet")
+@click.argument("cell")
+@click.pass_context
+def cell_get_cmd(ctx: click.Context, file: str, sheet: str, cell: str) -> None:
+    """Return the typed value of a single A1-addressed cell."""
+    plain: bool = ctx.obj["plain"]
+
+    def plain_fn(data: dict) -> str:
+        v = data.get("value")
+        return str(v) if v is not None else ""
+
+    try:
+        result = _get_cell(file, sheet, cell)
+    except SystemExit:
+        sys.exit(1)
+    output_result(result, plain, plain_fn)
