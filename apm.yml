@@ -1,6 +1,6 @@
-name: skill-pptx
+name: skill-office
 version: 0.1.10
-description: Powerpoint creation and editing skill for agents
+description: Office productivity skills for agents — PowerPoint (.pptx) and Excel (.xlsx) manipulation
 author: Renalias, Oscar
 dependencies:
   apm: []

@@ -1,6 +1,6 @@
-name: skill-pptx
+name: pypptx
 version: 0.1.10
-description: Powerpoint creation and editing skill for agents
+description: PowerPoint (.pptx) creation and editing skill for agents
 author: Renalias, Oscar
 dependencies:
   apm: []
