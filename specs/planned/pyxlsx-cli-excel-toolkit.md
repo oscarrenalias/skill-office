@@ -5,12 +5,12 @@ description: "A Python CLI package for reading and writing .xlsx files: workbook
 dependencies: null
 priority: high
 complexity: medium
-status: draft
+status: planned
 tags:
-  - cli
-  - xlsx
-  - excel
-  - python
+- cli
+- xlsx
+- excel
+- python
 scope:
   in: ".apm/skills/pyxlsx/ — all source, SKILL.md, apm.yml, pyproject.toml, self-bootstrap entry point; tests/test_xlsx_*.py"
   out: "formula recalculation, chart operations, conditional formatting, pivot tables, LibreOffice integration, DOCX/PPTX support, coupling to pypptx"
