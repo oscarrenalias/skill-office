@@ -1,7 +1,9 @@
 """Shared fixtures for the pypptx test suite.
 
 A real minimal .pptx is generated via python-pptx rather than using mocks.
+A real minimal .xlsx is generated via openpyxl rather than using mocks.
 """
+import datetime
 import pytest
 from pathlib import Path
 from pptx import Presentation
@@ -35,6 +37,37 @@ def minimal_pptx(tmp_path):
 
     path = tmp_path / "test.pptx"
     prs.save(str(path))
+    return path
+
+
+@pytest.fixture
+def minimal_xlsx(tmp_path):
+    """Create a minimal .xlsx workbook with two sheets via openpyxl.
+
+    Sheet 1 ("Data"): header row + 3 data rows with mixed types
+      (int, float, str, bool, datetime).
+    Sheet 2 ("Summary"): a single label cell.
+
+    Returns the Path to the file inside tmp_path.
+    """
+    import openpyxl
+
+    wb = openpyxl.Workbook()
+
+    # Sheet 1 — Data
+    ws1 = wb.active
+    ws1.title = "Data"
+    ws1.append(["Name", "Count", "Score", "Active", "Timestamp"])
+    ws1.append(["Alpha", 1, 1.1, True, datetime.datetime(2025, 1, 6, 9, 0, 0)])
+    ws1.append(["Beta", 42, 3.14, False, datetime.datetime(2025, 3, 1, 12, 30, 0)])
+    ws1.append(["Gamma", 0, 0.0, True, datetime.datetime(2025, 6, 15, 17, 45, 0)])
+
+    # Sheet 2 — Summary
+    ws2 = wb.create_sheet("Summary")
+    ws2["A1"] = "Summary sheet"
+
+    path = tmp_path / "test.xlsx"
+    wb.save(str(path))
     return path
 
 
