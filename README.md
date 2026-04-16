@@ -1,37 +1,72 @@
-# pypptx — PowerPoint skill for AI agents
+# skill-office — Microsoft Office skills for AI agents
 
-`pypptx` is an AI agent skill for creating and editing `.pptx` files. It exposes
-PowerPoint operations as a CLI with structured JSON output, designed to be called
-by agents running in Claude Code or similar environments. It can also be used directly
-from the terminal by humans.
+`skill-office` is a collection of AI agent skills for working with Microsoft Office files.
+Each skill exposes file operations as a CLI with structured JSON output, designed to be called
+by agents running in Claude Code or similar environments. Skills can also be used directly
+from the terminal.
 
-## Installing the skill
+## Skills included
 
+| Skill | File types | Entry point |
+|---|---|---|
+| `pypptx` | `.pptx` — create, edit, inspect PowerPoint presentations | `python3 pypptx.py` |
+| `pyxlsx` | `.xlsx` — read sheets and tables, update cells, manage sheets | `python3 pyxlsx.py` |
+
+Each skill self-bootstraps its own `.venv` on first run — no manual setup required.
+
+---
+
+## Installing the skills
+
+### Via APM
+
+```bash
+apm install oscarrenalias/skill-office#vX.Y.Z
 ```
-apm install -t claude oscarrenalias/skill-pptx#v0.1.7
+
+Please check the latest version of the skill in the [releases page](https://github.com/oscarrenalias/skill-office/releases).
+
+### Via zip (manual)
+
+Download the latest `skills-vX.Y.Z.zip` from the
+[releases page](https://github.com/oscarrenalias/skill-office/releases) and
+unzip it into your skills directory if you intend the skills to be available globally in your local environment:
+
+```bash
+# Claude Code
+unzip skills-vX.Y.Z.zip -d ~/.claude/skills/
+
+# Codex / other agents
+unzip skills-vX.Y.Z.zip -d ~/.agents/skills/
 ```
 
-Make sure to replace `v0.1.7` with whichever is the latest version according to the [releases page](https://github.com/oscarrenalias/skill-pptx/releases). 
+Skills can also be deployed at the project level:
 
-After installation the skill is available via `/skill-pptx` inside your agent, or preferrably let the agent identify when the skill should be used according to the context.
+```bash
+# Claude Code
+unzip skills-vX.Y.Z.zip -d .claude/skills/
+
+# Codex / other agents
+unzip skills-vX.Y.Z.zip -d .agents/skills/
+```
+
+The zip contains both skills. Each one bootstraps its own `.venv` with the required
+Python dependencies on first run.
+
+---
 
 ## Pre-requisites
 
-The Python code in the skill will bootstrap its own dependencies on first run (which will take longer than usual).
+The skills bootstrap their own Python dependencies on first run (first run will be slower than usual).
 
-Additionally, the `thumbnails` command requires [Pillow](https://pillow.readthedocs.io/):
-
-```
-pip install 'pypptx[thumbnails]'
-```
-
-And two system tools:
+The `pypptx thumbnails` command additionally requires two system tools:
 
 | Tool | macOS | Debian/Ubuntu |
 |---|---|---|
 | LibreOffice (`soffice`) | `brew install --cask libreoffice` | `sudo apt-get install libreoffice` |
 | Poppler (`pdftoppm`) | `brew install poppler` | `sudo apt-get install poppler-utils` |
 
+All other commands work without these tools.
 
 ---
 
@@ -47,7 +82,7 @@ Slide 1 should be the cover slide with the project name and today's date.
 Slides 2–5 should cover: overview, current status, risks, and next steps.
 Slide 6 is a closing/Q&A slide.
 
-After generating the file, check the deck for quality issues, then generate thumbnails 
+After generating the file, check the deck for quality issues, then generate thumbnails
 so you can visually confirm the output looks correct.
 ```
 
@@ -57,7 +92,7 @@ Claude will typically:
 3. Run `pypptx verify output.pptx` to catch structural issues
 4. Run `pypptx thumbnails output.pptx` and read the image to visually confirm the result
 
-### Scenario 2 — Modify an existing deck
+### Scenario 2 — Modify an existing presentation
 
 Ask Claude Code to make targeted edits to an existing presentation:
 
@@ -67,41 +102,54 @@ I have a deck in @quarterly_review.pptx. Please:
 - Delete the blank slide at position 7
 - Extract all the text so I can review what's there
 
-After making changes, run verify and generate thumbnails
-so we can confirm everything looks right.
+After making changes, run verify and generate thumbnails so we can confirm everything looks right.
 ```
 
 Claude will typically:
 1. Run `pypptx slide list quarterly_review.pptx` to see the current structure
 2. Run `pypptx extract-text quarterly_review.pptx` to read the content
 3. Run `pypptx slide move` and `pypptx slide delete` to make the structural changes
-4. Run `pypptx verify quarterly_review.pptx` to validate the result
-5. Run `pypptx thumbnails quarterly_review.pptx` and read the image for visual QA
+4. Run `pypptx verify` and `pypptx thumbnails` for validation and visual QA
+
+### Scenario 3 — Extract a workplan from Excel and build a roadmap in PowerPoint
+
+The two skills work together for cross-format workflows:
+
+```
+Read the workplan in @workplan.xlsx, extract all tasks from the "Q2 Plan" sheet,
+and create a roadmap slide in @template.pptx — one row per workstream,
+with task names, owners, and due dates laid out as a timeline table.
+```
+
+Claude will typically:
+1. Run `pyxlsx sheet list workplan.xlsx` to discover sheet names
+2. Run `pyxlsx table read workplan.xlsx "Q2 Plan"` to extract structured task data as JSON
+3. Write a python-pptx script to generate the roadmap slide from that data
+4. Run `pypptx verify` and `pypptx thumbnails` for QA
+
+### Scenario 4 — Read and update an Excel table
+
+```
+Open @budget.xlsx, find the "Headcount" sheet, and update the Q3 budget
+for the "Engineering" row to 450000. Then show me the full updated table.
+```
+
+Claude will typically:
+1. Run `pyxlsx table read budget.xlsx Headcount` to read current data
+2. Run `pyxlsx cell set budget.xlsx Headcount B5 450000` to update the cell
+3. Run `pyxlsx table read` again to confirm the change
 
 ---
 
 ## Human usage
 
-The CLI can also be called directly from the terminal, but it's not its main intended usage.
-
-```bash
-uv run pypptx --help
-uv run pypptx slide list deck.pptx
-uv run pypptx extract-text deck.pptx
-```
-
-Without `uv`, use the self-bootstrapping entry point at the skill root:
-
-```bash
-python3 pypptx.py --help
-python3 pypptx.py slide list deck.pptx
-```
-
-`pypptx.py` creates its own `.venv` on first run — no manual setup required.
+The CLIs can be called directly from the terminal but that is not their intended usage pattern.
 
 ---
 
 ## Output contract
+
+Both skills follow the same output contract:
 
 - **Default output**: every command writes a single JSON object to stdout.
 - **`--plain` flag**: pass `--plain` to receive human-readable text instead.
@@ -110,197 +158,40 @@ python3 pypptx.py slide list deck.pptx
 
 ---
 
-## Commands
+## pypptx commands
 
 Run `pypptx --help` or `pypptx <command> --help` for the full option reference.
+See [SKILL.md](.apm/skills/pypptx/SKILL.md) for detailed usage guidance.
+
+| Command | Description |
+|---|---|
+| `verify <file>` | Quality checks: unfilled placeholders, font sizes, overflow, clipping, overlaps |
+| `extract-text <file>` | Extract all text from slides |
+| `thumbnails <file>` | Generate labeled thumbnail grid (requires LibreOffice + Poppler) |
+| `slide list <file>` | List slides in presentation order |
+| `slide layouts <file>` | List available slide layouts with indices |
+| `slide add <file>` | Add a slide by layout or by duplicating an existing one |
+| `slide delete <file> <n>` | Delete slide at 1-based index |
+| `slide move <file> <from> <to>` | Move a slide between positions |
+| `unpack <file> [dir]` | Extract `.pptx` ZIP to a directory |
+| `clean <file_or_dir>` | Remove orphaned XML parts |
+| `pack <dir> <file>` | Repack a directory into a `.pptx` |
 
 ---
 
-### `verify`
+## pyxlsx commands
 
-Run quality checks on a `.pptx` file. Catches unfilled placeholder text, font sizes
-below 12pt, shapes that overflow the slide boundary, likely text clipping, and
-significant shape overlaps. Run this after every generation or edit.
+Run `pyxlsx --help` or `pyxlsx <command> --help` for the full option reference.
+See [SKILL.md](.apm/skills/pyxlsx/SKILL.md) for detailed usage guidance.
 
-```
-pypptx verify presentation.pptx
-```
-
-```json
-{
-  "errors": ["Slide 2: 'TextBox 3' has unfilled placeholder text — \"Click to add title\""],
-  "warnings": ["Slide 3: 'Content Placeholder 2' text may be clipped (est=2.10\" vs box=1.80\", +17%)"],
-  "passed": false,
-  "slide_count": 5,
-  "error_count": 1,
-  "warning_count": 1
-}
-```
-
-With `--plain`:
-
-```
-pypptx verify presentation.pptx --plain
-```
-
-```
-FAIL  Slide 2: 'TextBox 3' has unfilled placeholder text — "Click to add title"
-WARN  Slide 3: 'Content Placeholder 2' text may be clipped (est=2.10" vs box=1.80", +17%)
-```
-
-Exit code `0` when no errors (warnings are acceptable). Exit code `1` on any error.
-
----
-
-### `extract-text`
-
-Extract all text from a `.pptx` file.
-
-```
-pypptx extract-text presentation.pptx
-```
-
-```
---- Slide 1 ---
-Welcome to pypptx
-A PowerPoint manipulation toolkit
---- Slide 2 ---
-Installation
-pip install -e .
-```
-
-Limit to specific slides with `--slides`:
-
-```
-pypptx extract-text presentation.pptx --slides 1,3
-```
-
-With `--output`, text is written to the given file and command metadata is emitted as JSON:
-
-```
-pypptx extract-text presentation.pptx --output extracted.txt
-```
-
-```json
-{"output_file": "extracted.txt", "slide_count": 2}
-```
-
----
-
-### `thumbnails`
-
-Generate labeled thumbnail grid images from a `.pptx` file.
-Requires LibreOffice, Poppler/pdftoppm, and Pillow — see [thumbnails support](#optional-thumbnails-support).
-
-```
-pypptx thumbnails presentation.pptx
-```
-
-```json
-{"files": ["thumbnails.jpg"]}
-```
-
-**Options:**
-
-| Option | Default | Description |
-|---|---|---|
-| `--output PREFIX` | `thumbnails` | Output filename prefix; `.jpg` is appended automatically. |
-| `--cols N` | `3` (max `6`) | Number of columns in the thumbnail grid. |
-| `--plain` | off | Emit one file path per line instead of JSON. |
-
-Hidden slides appear as a hatched grey placeholder so the grid index always matches
-the slide number. Large decks are split across multiple JPEG files automatically.
-
----
-
-### `slide list`
-
-List slides in presentation order.
-
-```
-pypptx slide list presentation.pptx
-```
-
-```json
-{"slides": [
-  {"index": 1, "file": "slide1.xml", "hidden": false},
-  {"index": 2, "file": "slide2.xml", "hidden": true}
-]}
-```
-
----
-
-### `slide layouts`
-
-List all slide layouts with their index and name.
-
-```
-pypptx slide layouts presentation.pptx
-```
-
-```json
-{"layouts": [
-  {"index": 1, "file": "slideLayout1.xml", "name": "Title Slide"},
-  {"index": 2, "file": "slideLayout2.xml", "name": "Title and Content"},
-  {"index": 3, "file": "slideLayout3.xml", "name": "Section Header"}
-]}
-```
-
-With `--plain`:
-
-```
-slideLayout1.xml  Title Slide
-slideLayout2.xml  Title and Content
-slideLayout3.xml  Section Header
-```
-
-Always run this before choosing a layout index for `slide add`. Layout index 1 is
-almost always the cover slide — never use it for regular content slides.
-
----
-
-### `slide add`
-
-Add a slide to a `.pptx` file. Use `slide layouts` to find the layout index.
-
-```
-pypptx slide add presentation.pptx --layout 2
-pypptx slide add presentation.pptx --duplicate 2
-pypptx slide add presentation.pptx --duplicate 1 --position 2
-```
-
----
-
-### `slide delete`
-
-Delete a slide by its 1-based index.
-
-```
-pypptx slide delete presentation.pptx 3
-```
-
----
-
-### `slide move`
-
-Move a slide from one 1-based position to another.
-
-```
-pypptx slide move presentation.pptx 3 1
-```
-
----
-
-### `unpack` / `clean` / `pack`
-
-Structural editing workflow for XML-level changes:
-
-```
-pypptx unpack presentation.pptx      # expand to directory
-# edit XML files directly
-pypptx clean presentation/           # remove orphaned parts
-pypptx pack presentation/ output.pptx
-```
-
-Most slide commands accept a `.pptx` file directly and handle unpack/clean/repack
-internally. The explicit workflow is only needed when editing XML by hand.
+| Command | Description |
+|---|---|
+| `info <file>` | Workbook metadata: sheet names and named ranges |
+| `sheet list <file>` | List sheets with row/column counts and visibility |
+| `sheet read <file> <sheet>` | Read sheet as a raw 2D grid |
+| `sheet add/delete/rename <file>` | Add, delete, or rename a sheet |
+| `table read <file> <sheet>` | Read sheet as array-of-objects keyed by header row |
+| `cell get <file> <sheet> <cell>` | Get a single cell value |
+| `cell set <file> <sheet> <cell> <value>` | Set a single cell value or formula |
+| `unpack <file> [dir]` | Extract `.xlsx` ZIP to a directory |
+| `pack <dir> <file>` | Repack a directory into an `.xlsx` |
