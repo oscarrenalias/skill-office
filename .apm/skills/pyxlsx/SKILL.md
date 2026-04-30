@@ -1,3 +1,14 @@
+---
+name: pyxlsx
+description: Python CLI for reading, editing, and creating Excel .xlsx files
+author: Renalias, Oscar
+tags:
+  - excel
+  - xlsx
+  - spreadsheets
+  - office
+entry_point: pyxlsx.py
+---
 # pyxlsx — Excel Manipulation Skill
 
 `pyxlsx` is an agent-friendly CLI for reading and writing `.xlsx` files. It covers workbook inspection, sheet management, table and cell reads, single-cell writes, and raw ZIP pack/unpack.
