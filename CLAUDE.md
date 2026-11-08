@@ -81,8 +81,9 @@ specs/
 New features are developed via specs. Use the spec management skill:
 
 ```bash
-python3 .claude/skills/skill-spec-management/spec.py list
-python3 .claude/skills/skill-spec-management/spec.py show spec-5636a620
+takt spec list
+takt spec show spec-5636a620
+takt spec search "<topic>"
 ```
 
 Plan a spec with takt:
