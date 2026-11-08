@@ -15,3 +15,6 @@ __pycache__/
 .takt/memory/
 .claude/settings.local.json
 .DS_Store
+
+# takt
+.takt/runs/
